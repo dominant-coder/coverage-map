@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Service Partner Coverage Map</title>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+
+  <style>
+    html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    .layout { display: grid; grid-template-columns: 320px 1fr; height: 100%; }
+    .sidebar { border-right: 1px solid #e5e7eb; padding: 14px; overflow: auto; }
+    #map { height: 100%; }
+
+    .row { margin-bottom: 12px; }
+    label { display: block; font-size: 12px; color: #374151; margin-bottom: 6px; }
+    select, input[type="number"] { width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 8px; }
+    .legend { margin-top: 14px; font-size: 13px; color: #111827; }
+    .legend-item { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+    .swatch { width: 12px; height: 12px; border-radius: 999px; display: inline-block; border: 1px solid rgba(0,0,0,0.15); }
+    .muted { font-size: 12px; color: #6b7280; line-height: 1.4; }
+    .counts { font-size: 12px; color: #111827; margin-top: 10px; }
+    .btn { width: 100%; padding: 9px 10px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; cursor: pointer; }
+    .btn:hover { background: #f9fafb; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <h2 style="margin: 0 0 8px 0;">Coverage Map</h2>
+      <div class="muted">
+        Select a Service Partner to show locations and a radius coverage ring (default 100 miles).
+      </div>
+
+      <div class="row" style="margin-top: 14px;">
+        <label for="partnerSelect">Service Partner</label>
+        <select id="partnerSelect">
+          <option value="All">All</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label for="roleSelect">Role</label>
+        <select id="roleSelect">
+          <option value="All">All</option>
+          <option value="Technician">Technician</option>
+          <option value="Electrician">Electrician</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label for="radiusMiles">Coverage Radius (miles)</label>
+        <input id="radiusMiles" type="number" min="1" step="1" value="100" />
+      </div>
+
+      <button class="btn" id="fitBtn">Fit map to results</button>
+
+      <div class="counts" id="counts"></div>
+
+      <div class="legend">
+        <div style="font-weight: 600;">Legend</div>
+        <div class="legend-item"><span class="swatch" style="background: #2563eb;"></span> Technician</div>
+        <div class="legend-item"><span class="swatch" style="background: #16a34a;"></span> Electrician</div>
+      </div>
+
+      <div class="muted" style="margin-top: 14px;">
+        Data source: <code>data.csv</code> in this repository.
+      </div>
+    </aside>
+
+    <main id="map"></main>
+  </div>
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+
+  <!-- We'll create app.js in the next step -->
+  <script src="./app.js"></script>
+</body>
+</html>
