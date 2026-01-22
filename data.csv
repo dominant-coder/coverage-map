@@ -1,1 +1,2 @@
 partner,name,role,lat,lon,service_radius_miles,price,address,city,state,zip,phone,email,notes,active
+Alamon,Test Tech,Technician,32.7767,-96.7970,100,$120/hr,123 Main St,Dallas,TX,75201,214-555-0101,test@alamon.com,Test record,TRUE
