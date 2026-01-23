@@ -212,6 +212,43 @@ function zoomToState(stateCode) {
   map.fitBounds(bounds, { padding: [20, 20] });
 }
 
+function setJobStatus(text) {
+  jobStatus.textContent = text;
+}
+
+function clearJobResults() {
+  jobResults.innerHTML = "";
+}
+
+function renderResultsList(items, title) {
+  const container = document.createElement("div");
+  container.style.marginTop = "10px";
+
+  const heading = document.createElement("div");
+  heading.style.fontWeight = "600";
+  heading.style.marginBottom = "6px";
+  heading.textContent = title;
+  container.appendChild(heading);
+
+  for (const it of items) {
+    const row = document.createElement("div");
+    row.style.padding = "8px";
+    row.style.border = "1px solid #e5e7eb";
+    row.style.borderRadius = "8px";
+    row.style.marginBottom = "8px";
+
+    row.innerHTML = `
+      <div style="font-weight:600;">${it.name || "Unnamed"} (${it.role || "-"})</div>
+      <div class="muted">Partner: ${it.partner || "-"} • ${it.city || ""} ${it.state || ""}</div>
+      <div style="margin-top:4px;"><b>${it.distance.toFixed(1)} mi</b> from job • Radius: ${it.radiusMiles} mi</div>
+    `;
+    container.appendChild(row);
+  }
+
+  jobResults.appendChild(container);
+}
+
+
 function haversineMiles(lat1, lon1, lat2, lon2) {
   const R = 3958.7613; // Earth radius in miles
   const toRad = (d) => (d * Math.PI) / 180;
