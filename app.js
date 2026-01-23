@@ -57,6 +57,7 @@ function makeDotIcon(color, label) {
 
 // --- UI elements ---
 const partnerSelect = document.getElementById("partnerSelect");
+const stateSelect = document.getElementById("stateSelect");
 const roleSelect = document.getElementById("roleSelect");
 const radiusMilesInput = document.getElementById("radiusMiles");
 const countsEl = document.getElementById("counts");
@@ -86,6 +87,8 @@ function normalizeRow(row) {
   const role = safeTrim(row.role);
   const price = safeTrim(row.price);
   const notes = safeTrim(row.notes);
+  const state = safeTrim(row.state).toUpperCase();
+
 
   // lat/lon must be numbers in decimal format
   const lat = Number(row.lat);
@@ -99,7 +102,7 @@ function normalizeRow(row) {
   const activeRaw = safeTrim(row.active).toUpperCase();
   const active = (activeRaw === "" || activeRaw === "TRUE" || activeRaw === "1" || activeRaw === "YES");
 
-  return { partner, name, role, lat, lon, price, notes, rowRadiusMiles, active };
+  return { partner, name, role, lat, lon, price, notes, rowRadiusMiles, active, state };
 }
 
 function getFilteredRows() {
@@ -173,6 +176,33 @@ function fitToResults() {
   map.fitBounds(b.pad(0.25));
 }
 
+// Approximate state bounding boxes for zooming.
+// Add more as needed. Format: [ [southWestLat, southWestLon], [northEastLat, northEastLon] ]
+const STATE_BOUNDS = {
+  TX: [[25.8, -106.7], [36.6, -93.5]],
+  CA: [[32.5, -124.5], [42.1, -114.1]],
+  NV: [[35.0, -120.0], [42.0, -114.0]],
+  FL: [[24.4, -87.7], [31.2, -80.0]],
+  IN: [[37.8, -88.1], [41.8, -84.8]],
+  KS: [[37.0, -102.1], [40.1, -94.6]],
+  WA: [[45.5, -124.9], [49.1, -116.9]]
+};
+
+function zoomToState(stateCode) {
+  if (!stateCode || stateCode === "All") {
+    // If All is selected, fit to current results instead of the whole US
+    fitToResults();
+    return;
+  }
+  const bounds = STATE_BOUNDS[stateCode];
+  if (!bounds) {
+    // If we don't have bounds defined yet, do nothing (safe behavior)
+    return;
+  }
+  map.fitBounds(bounds, { padding: [20, 20] });
+}
+
+
 // --- Load CSV ---
 Papa.parse(CSV_PATH, {
   download: true,
@@ -184,6 +214,23 @@ Papa.parse(CSV_PATH, {
 
     const partners = Array.from(new Set(allRows.map(r => r.partner))).sort((a, b) => a.localeCompare(b));
     populatePartnerDropdown(partners);
+    // Populate State dropdown based on data.csv
+    const states = Array.from(
+      new Set(allRows.map(r => r.state).filter(Boolean))
+    ).sort((a, b) => a.localeCompare(b));
+    
+    stateSelect.innerHTML = "";
+    const allStateOpt = document.createElement("option");
+    allStateOpt.value = "All";
+    allStateOpt.textContent = "All";
+    stateSelect.appendChild(allStateOpt);
+    
+    for (const s of states) {
+      const opt = document.createElement("option");
+      opt.value = s;
+      opt.textContent = s;
+      stateSelect.appendChild(opt);
+    }
 
     render();
   },
@@ -201,3 +248,7 @@ radiusMilesInput.addEventListener("input", () => {
   window.__radiusTimer = setTimeout(render, 250);
 });
 fitBtn.addEventListener("click", fitToResults);
+stateSelect.addEventListener("change", () => {
+  zoomToState(stateSelect.value);
+});
+
