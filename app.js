@@ -227,62 +227,36 @@ function haversineMiles(lat1, lon1, lat2, lon2) {
   return R * c;
 }
 
-// Free geocoding via OpenStreetMap Nominatim (no API key).
-// For best results, include city/state in the address you type.
+// Free geocoding via Photon (OpenStreetMap data), no API key.
+// More browser-friendly than Nominatim for simple demos.
 async function geocodeAddress(address) {
   const url =
-    "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" +
+    "https://photon.komoot.io/api/?limit=1&q=" +
     encodeURIComponent(address);
 
-  const resp = await fetch(url, {
-    headers: { "Accept": "application/json" }
-  });
-
+  const resp = await fetch(url);
   if (!resp.ok) throw new Error(`Geocoding failed (${resp.status})`);
+
   const data = await resp.json();
-  if (!data || !data.length) return null;
+  if (!data || !data.features || !data.features.length) return null;
+
+  const f = data.features[0];
+  const [lon, lat] = f.geometry.coordinates;
+
+  // Build a readable display name
+  const p = f.properties || {};
+  const displayName = [
+    p.name,
+    p.city,
+    p.state,
+    p.country
+  ].filter(Boolean).join(", ");
 
   return {
-    lat: Number(data[0].lat),
-    lon: Number(data[0].lon),
-    displayName: data[0].display_name
+    lat: Number(lat),
+    lon: Number(lon),
+    displayName: displayName || address
   };
-}
-
-function setJobStatus(text) {
-  jobStatus.textContent = text;
-}
-
-function clearJobResults() {
-  jobResults.innerHTML = "";
-}
-
-function renderResultsList(items, title) {
-  const container = document.createElement("div");
-  container.style.marginTop = "10px";
-
-  const heading = document.createElement("div");
-  heading.style.fontWeight = "600";
-  heading.style.marginBottom = "6px";
-  heading.textContent = title;
-  container.appendChild(heading);
-
-  for (const it of items) {
-    const row = document.createElement("div");
-    row.style.padding = "8px";
-    row.style.border = "1px solid #e5e7eb";
-    row.style.borderRadius = "8px";
-    row.style.marginBottom = "8px";
-
-    row.innerHTML = `
-      <div style="font-weight:600;">${it.name || "Unnamed"} (${it.role || "-"})</div>
-      <div class="muted">Partner: ${it.partner || "-"} • ${it.city || ""} ${it.state || ""}</div>
-      <div style="margin-top:4px;"><b>${it.distance.toFixed(1)} mi</b> from job • Radius: ${it.radiusMiles} mi</div>
-    `;
-    container.appendChild(row);
-  }
-
-  jobResults.appendChild(container);
 }
 
 
@@ -391,7 +365,7 @@ jobSearchBtn.addEventListener("click", async () => {
 
   } catch (e) {
     console.error(e);
-    setJobStatus("Address lookup failed. Please try again in a moment or use a more specific address.");
+    setJobStatus(`Address lookup failed. Try a more specific address. (Details: ${e.message})`);
   }
 });
 
