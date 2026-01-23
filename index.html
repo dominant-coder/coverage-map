@@ -20,7 +20,7 @@
 
     .row { margin-bottom: 12px; }
     label { display: block; font-size: 12px; color: #374151; margin-bottom: 6px; }
-    select, input[type="number"] { width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 8px; }
+    select, input[type="number"], input[type="text"] { width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 8px; }
     .legend { margin-top: 14px; font-size: 13px; color: #111827; }
     .legend-item { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
     .swatch { width: 12px; height: 12px; border-radius: 999px; display: inline-block; border: 1px solid rgba(0,0,0,0.15); }
@@ -51,6 +51,22 @@
           <option value="All">All</option>
         </select>
       </div>
+
+      <div class="row">
+        <label for="jobAddress">Job address</label>
+        <input id="jobAddress" type="text" placeholder="e.g., 123 Main St, Dallas, TX" />
+      </div>
+      
+      <div class="row">
+        <button class="btn" id="jobSearchBtn">Check coverage</button>
+      </div>
+
+      <div class="row">
+        <div style="font-weight: 600; margin-bottom: 6px;">Coverage results</div>
+        <div class="muted" id="jobStatus">Enter an address and click “Check coverage”.</div>
+        <div id="jobResults" style="margin-top: 8px;"></div>
+      </div>
+
 
       <div class="row">
         <label for="roleSelect">Role</label>
