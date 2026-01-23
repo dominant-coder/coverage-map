@@ -33,6 +33,10 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 const markersLayer = L.layerGroup().addTo(map);
 const circlesLayer = L.layerGroup().addTo(map);
 
+const jobLayer = L.layerGroup().addTo(map);
+let jobMarker = null;
+
+
 // --- Dot Icon for tech location ---
 function makeDotIcon(color, label) {
   const svg = `
