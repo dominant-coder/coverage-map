@@ -33,6 +33,20 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 const markersLayer = L.layerGroup().addTo(map);
 const circlesLayer = L.layerGroup().addTo(map);
 
+function makeDotIcon(color) {
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+      <circle cx="9" cy="9" r="7" fill="${color}" stroke="rgba(0,0,0,0.25)" stroke-width="1"/>
+    </svg>`;
+  return L.divIcon({
+    className: "",
+    html: svg,
+    iconSize: [18, 18],
+    iconAnchor: [9, 9]
+  });
+}
+
+
 // --- UI elements ---
 const partnerSelect = document.getElementById("partnerSelect");
 const roleSelect = document.getElementById("roleSelect");
@@ -115,19 +129,25 @@ function render() {
     `;
 
     // Simple default marker for v1
-    const marker = L.marker([r.lat, r.lon]).bindPopup(popupHtml);
+    const color = ROLE_COLOR[r.role] || "#6b7280";
+    const icon = makeDotIcon(color);
+    const marker = L.marker([r.lat, r.lon], { icon }).bindPopup(popupHtml);
     marker.addTo(markersLayer);
+    
 
     const radiusMiles = (r.rowRadiusMiles && Number.isFinite(r.rowRadiusMiles)) ? r.rowRadiusMiles : uiRadiusMiles;
     const circle = L.circle([r.lat, r.lon], {
       radius: milesToMeters(radiusMiles),
-      weight: 1,
-      fillOpacity: 0.08
+      color: color,
+      fillColor: color,
+      weight: 2,
+      fillOpacity: 0.12
     });
+
     circle.addTo(circlesLayer);
 
     bounds.push([r.lat, r.lon]);
-  }
+}
 
   countsEl.textContent = `${rows.length} location(s) shown`;
 
