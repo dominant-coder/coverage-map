@@ -33,18 +33,26 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 const markersLayer = L.layerGroup().addTo(map);
 const circlesLayer = L.layerGroup().addTo(map);
 
-function makeDotIcon(color) {
+// --- Dot Icon for tech location ---
+function makeDotIcon(color, label) {
   const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18">
-      <circle cx="9" cy="9" r="7" fill="${color}" stroke="rgba(0,0,0,0.25)" stroke-width="1"/>
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+      <circle cx="11" cy="11" r="9" fill="${color}" stroke="rgba(0,0,0,0.25)" stroke-width="1"/>
+      <text x="11" y="14"
+        text-anchor="middle"
+        font-size="11"
+        font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif"
+        font-weight="700"
+        fill="#ffffff">${label}</text>
     </svg>`;
   return L.divIcon({
     className: "",
     html: svg,
-    iconSize: [18, 18],
-    iconAnchor: [9, 9]
+    iconSize: [22, 22],
+    iconAnchor: [11, 11]
   });
 }
+
 
 
 // --- UI elements ---
@@ -130,7 +138,8 @@ function render() {
 
     // Simple default marker for v1
     const color = ROLE_COLOR[r.role] || "#6b7280";
-    const icon = makeDotIcon(color);
+    const label = (r.role === "Electrician") ? "E" : (r.role === "Technician") ? "T" : "?";
+    const icon = makeDotIcon(color, label);
     const marker = L.marker([r.lat, r.lon], { icon }).bindPopup(popupHtml);
     marker.addTo(markersLayer);
     
