@@ -36,6 +36,10 @@ const circlesLayer = L.layerGroup().addTo(map);
 const jobLayer = L.layerGroup().addTo(map);
 let jobMarker = null;
 
+let lastJob = null; // { lat, lon, displayName }
+const MAX_OUTSIDE_MILES = 250;
+
+
 
 // --- Dot Icon for tech location ---
 function makeDotIcon(color, label) {
@@ -121,9 +125,11 @@ function getFilteredRows() {
 
   return allRows.filter(r => {
     if (!r.active) return false;
+    
     const partnerOk = (selectedPartner === "All") || (r.partner === selectedPartner);
     const roleOk = (selectedRole === "All") || (r.role === selectedRole);
     const stateOk = (selectedState === "All") || (r.state === selectedState);
+    
     return partnerOk && roleOk && stateOk;
   });
 }
@@ -131,8 +137,6 @@ function getFilteredRows() {
 function render() {
   markersLayer.clearLayers();
   circlesLayer.clearLayers();
-  const jobLayer = L.layerGroup().addTo(map);
-  let jobMarker = null;
 
 
   const uiRadiusMiles = Math.max(1, Number(radiusMilesInput.value || 100));
@@ -177,10 +181,11 @@ function render() {
 
   countsEl.textContent = `${rows.length} location(s) shown`;
 
-  if (bounds.length) {
+  if (!lastJob && bounds.length) {
     const b = L.latLngBounds(bounds);
     map.fitBounds(b.pad(0.25));
   }
+
 }
 
 function fitToResults() {
@@ -301,6 +306,57 @@ async function geocodeAddress(address) {
 }
 
 
+
+function computeCoverageFromJob(jobLat, jobLon, jobLabel) {
+  clearJobResults();
+
+  // Place/replace job marker
+  jobLayer.clearLayers();
+  jobMarker = L.marker([jobLat, jobLon]).addTo(jobLayer)
+    .bindPopup(`<b>Job Location</b><div style="margin-top:6px;">${jobLabel}</div>`);
+  jobMarker.openPopup();
+
+  // Keep the map focused on the job
+  map.setView([jobLat, jobLon], Math.max(map.getZoom(), 9));
+
+  // Score currently filtered resources
+  const rows = getFilteredRows().filter(r => isValidLatLon(r.lat, r.lon));
+  if (!rows.length) {
+    setJobStatus("No technicians/electricians match the current filters.");
+    return;
+  }
+
+  const uiRadiusMiles = Math.max(1, Number(radiusMilesInput.value || 100));
+
+  const scored = rows.map(r => {
+    const radiusMiles = (r.rowRadiusMiles && Number.isFinite(r.rowRadiusMiles)) ? r.rowRadiusMiles : uiRadiusMiles;
+    const distance = haversineMiles(jobLat, jobLon, r.lat, r.lon);
+    return { ...r, radiusMiles, distance, eligible: distance <= radiusMiles };
+  }).sort((a, b) => a.distance - b.distance);
+
+  const eligible = scored.filter(s => s.eligible);
+  const outside = scored.filter(s => !s.eligible);
+
+  if (eligible.length) {
+    setJobStatus(`Found ${eligible.length} eligible resource(s) within radius.`);
+    renderResultsList(eligible, "Inside radius (eligible)");
+    return;
+  }
+
+  // No eligible: show nearest outside, but cap to 250 miles
+  const outsideCapped = outside.filter(x => x.distance <= MAX_OUTSIDE_MILES);
+
+  if (!outsideCapped.length) {
+    setJobStatus(`No resources are within radius, and none are within ${MAX_OUTSIDE_MILES} miles. You can zoom/pan manually to inspect.`);
+    return;
+  }
+
+  setJobStatus(`No resources are within radius. Showing nearest outside radius (within ${MAX_OUTSIDE_MILES} miles).`);
+  renderResultsList(outsideCapped.slice(0, 5), `Nearest outside radius (≤ ${MAX_OUTSIDE_MILES} mi)`);
+}
+
+
+
 // --- Load CSV ---
 Papa.parse(CSV_PATH, {
   download: true,
@@ -339,15 +395,33 @@ Papa.parse(CSV_PATH, {
 });
 
 // --- Event handlers ---
-partnerSelect.addEventListener("change", render);
-roleSelect.addEventListener("change", render);
+partnerSelect.addEventListener("change", () => {
+  render();
+  if (lastJob) computeCoverageFromJob(lastJob.lat, lastJob.lon, lastJob.displayName);
+});
+
+roleSelect.addEventListener("change", () => {
+  render();
+  if (lastJob) computeCoverageFromJob(lastJob.lat, lastJob.lon, lastJob.displayName);
+});
+
 radiusMilesInput.addEventListener("input", () => {
   clearTimeout(window.__radiusTimer);
-  window.__radiusTimer = setTimeout(render, 250);
+  window.__radiusTimer = setTimeout(() => {
+    render();
+    if (lastJob) computeCoverageFromJob(lastJob.lat, lastJob.lon, lastJob.displayName);
+  }, 250);
 });
+
 fitBtn.addEventListener("click", fitToResults);
+
 stateSelect.addEventListener("change", () => {
-  zoomToState(stateSelect.value);
+  render();
+  if (lastJob) {
+    computeCoverageFromJob(lastJob.lat, lastJob.lon, lastJob.displayName);
+  } else {
+    zoomToState(stateSelect.value);
+  }
 });
 
   // --- Job Search Handler ---
@@ -368,6 +442,10 @@ jobSearchBtn.addEventListener("click", async () => {
       setJobStatus("No match found. Try adding city and state (e.g., “Fort Worth, TX”).");
       return;
     }
+
+    lastJob = { lat: geo.lat, lon: geo.lon, displayName: geo.displayName || address };
+    computeCoverageFromJob(lastJob.lat, lastJob.lon, lastJob.displayName);
+
 
     // Place/replace job marker
     jobLayer.clearLayers();
