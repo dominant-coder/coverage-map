@@ -62,6 +62,11 @@ const roleSelect = document.getElementById("roleSelect");
 const radiusMilesInput = document.getElementById("radiusMiles");
 const countsEl = document.getElementById("counts");
 const fitBtn = document.getElementById("fitBtn");
+const jobAddressInput = document.getElementById("jobAddress");
+const jobSearchBtn = document.getElementById("jobSearchBtn");
+const jobStatus = document.getElementById("jobStatus");
+const jobResults = document.getElementById("jobResults");
+
 
 let allRows = [];
 
@@ -107,19 +112,24 @@ function normalizeRow(row) {
 
 function getFilteredRows() {
   const selectedPartner = partnerSelect.value;
+  const selectedState = stateSelect.value;
   const selectedRole = roleSelect.value;
 
   return allRows.filter(r => {
     if (!r.active) return false;
     const partnerOk = (selectedPartner === "All") || (r.partner === selectedPartner);
     const roleOk = (selectedRole === "All") || (r.role === selectedRole);
-    return partnerOk && roleOk;
+    const stateOk = (selectedState === "All") || (r.state === selectedState);
+    return partnerOk && roleOk && stateOk;
   });
 }
 
 function render() {
   markersLayer.clearLayers();
   circlesLayer.clearLayers();
+  const jobLayer = L.layerGroup().addTo(map);
+  let jobMarker = null;
+
 
   const uiRadiusMiles = Math.max(1, Number(radiusMilesInput.value || 100));
   const rows = getFilteredRows();
@@ -202,6 +212,79 @@ function zoomToState(stateCode) {
   map.fitBounds(bounds, { padding: [20, 20] });
 }
 
+function haversineMiles(lat1, lon1, lat2, lon2) {
+  const R = 3958.7613; // Earth radius in miles
+  const toRad = (d) => (d * Math.PI) / 180;
+
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+// Free geocoding via OpenStreetMap Nominatim (no API key).
+// For best results, include city/state in the address you type.
+async function geocodeAddress(address) {
+  const url =
+    "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" +
+    encodeURIComponent(address);
+
+  const resp = await fetch(url, {
+    headers: { "Accept": "application/json" }
+  });
+
+  if (!resp.ok) throw new Error(`Geocoding failed (${resp.status})`);
+  const data = await resp.json();
+  if (!data || !data.length) return null;
+
+  return {
+    lat: Number(data[0].lat),
+    lon: Number(data[0].lon),
+    displayName: data[0].display_name
+  };
+}
+
+function setJobStatus(text) {
+  jobStatus.textContent = text;
+}
+
+function clearJobResults() {
+  jobResults.innerHTML = "";
+}
+
+function renderResultsList(items, title) {
+  const container = document.createElement("div");
+  container.style.marginTop = "10px";
+
+  const heading = document.createElement("div");
+  heading.style.fontWeight = "600";
+  heading.style.marginBottom = "6px";
+  heading.textContent = title;
+  container.appendChild(heading);
+
+  for (const it of items) {
+    const row = document.createElement("div");
+    row.style.padding = "8px";
+    row.style.border = "1px solid #e5e7eb";
+    row.style.borderRadius = "8px";
+    row.style.marginBottom = "8px";
+
+    row.innerHTML = `
+      <div style="font-weight:600;">${it.name || "Unnamed"} (${it.role || "-"})</div>
+      <div class="muted">Partner: ${it.partner || "-"} • ${it.city || ""} ${it.state || ""}</div>
+      <div style="margin-top:4px;"><b>${it.distance.toFixed(1)} mi</b> from job • Radius: ${it.radiusMiles} mi</div>
+    `;
+    container.appendChild(row);
+  }
+
+  jobResults.appendChild(container);
+}
+
 
 // --- Load CSV ---
 Papa.parse(CSV_PATH, {
@@ -251,4 +334,65 @@ fitBtn.addEventListener("click", fitToResults);
 stateSelect.addEventListener("change", () => {
   zoomToState(stateSelect.value);
 });
+
+  // --- Job Search Handler ---
+jobSearchBtn.addEventListener("click", async () => {
+  const address = (jobAddressInput.value || "").trim();
+  clearJobResults();
+
+  if (!address) {
+    setJobStatus("Please enter a job address.");
+    return;
+  }
+
+  setJobStatus("Looking up address…");
+
+  try {
+    const geo = await geocodeAddress(address);
+    if (!geo || !Number.isFinite(geo.lat) || !Number.isFinite(geo.lon)) {
+      setJobStatus("No match found. Try adding city and state (e.g., “Fort Worth, TX”).");
+      return;
+    }
+
+    // Place/replace job marker
+    jobLayer.clearLayers();
+    jobMarker = L.marker([geo.lat, geo.lon]).addTo(jobLayer)
+      .bindPopup(`<b>Job Location</b><div style="margin-top:6px;">${geo.displayName || address}</div>`);
+    jobMarker.openPopup();
+
+    // Zoom to job location (nice UX)
+    map.setView([geo.lat, geo.lon], Math.max(map.getZoom(), 9));
+
+    // Compute distances vs currently filtered techs
+    const rows = getFilteredRows().filter(r => isValidLatLon(r.lat, r.lon));
+    if (!rows.length) {
+      setJobStatus("No technicians/electricians match the current filters.");
+      return;
+    }
+
+    const uiRadiusMiles = Math.max(1, Number(radiusMilesInput.value || 100));
+
+    const scored = rows.map(r => {
+      const radiusMiles = (r.rowRadiusMiles && Number.isFinite(r.rowRadiusMiles)) ? r.rowRadiusMiles : uiRadiusMiles;
+      const distance = haversineMiles(geo.lat, geo.lon, r.lat, r.lon);
+      return { ...r, radiusMiles, distance, eligible: distance <= radiusMiles };
+    }).sort((a, b) => a.distance - b.distance);
+
+    const eligible = scored.filter(s => s.eligible);
+    const ineligible = scored.filter(s => !s.eligible);
+
+    if (eligible.length) {
+      setJobStatus(`Found ${eligible.length} eligible resource(s) within radius.`);
+      renderResultsList(eligible, "Inside radius (eligible)");
+    } else {
+      setJobStatus("No resources are within radius. Showing nearest outside radius.");
+      renderResultsList(ineligible.slice(0, 5), "Nearest outside radius");
+    }
+
+  } catch (e) {
+    console.error(e);
+    setJobStatus("Address lookup failed. Please try again in a moment or use a more specific address.");
+  }
+});
+
 
