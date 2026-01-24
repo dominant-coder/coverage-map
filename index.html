@@ -13,6 +13,83 @@
   />
 
   <style>
+
+    :root{
+  --evp-blue: #373DEC;
+  --evp-blue-dark: #2B30C8;
+}
+
+.brand-title{
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--evp-blue);
+  line-height: 1.1;
+}
+
+.sidebar-header{
+  margin-bottom: 14px;
+}
+
+.brand-logo{
+  width: 140px;
+  height: auto;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.brand-subtitle{
+  color: #6b7280;
+  margin-top: 6px;
+}
+
+.input-wrap{
+  position: relative;
+}
+
+.clear-btn{
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  color: #6b7280;
+}
+
+.clear-btn:hover{
+  border-color: #9ca3af;
+  color: #111827;
+}
+
+.section-title{
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.help details{
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.help summary{
+  cursor: pointer;
+  font-weight: 700;
+  color: #111827;
+}
+
+.help-body{
+  margin-top: 10px;
+  color: #374151;
+}
+
+    
     html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
     .layout { display: grid; grid-template-columns: 320px 1fr; height: 100%; }
     .sidebar { border-right: 1px solid #e5e7eb; padding: 14px; overflow: auto; }
@@ -31,12 +108,13 @@
   </style>
 </head>
 <body>
+  
   <div class="layout">
-    <aside class="sidebar">
-      <h2 style="margin: 0 0 8px 0;">Coverage Map</h2>
-      <div class="muted">
-        Select a Service Partner to show locations and a radius coverage ring (default 100 miles).
-      </div>
+    <div class="sidebar-header">
+      <img class="brand-logo" src="evp-logo.png" alt="EVPassport" onerror="this.style.display='none'">
+      <div class="brand-title">Coverage Map</div>
+      <div class="brand-subtitle">Select a Service Partner to show locations and a radius coverage ring.</div>
+    </div>
 
       <div class="row" style="margin-top: 14px;">
         <label for="partnerSelect">Service Partner</label>
@@ -54,18 +132,21 @@
 
       <div class="row">
         <label for="jobAddress">Job address</label>
-        <input id="jobAddress" type="text" placeholder="e.g., 123 Main St, Dallas, TX" />
+        <div class="input-wrap">
+          <input id="jobAddress" type="text" placeholder="e.g., Fort Worth, TX" />
+          <button id="clearJobBtn" class="clear-btn" type="button" aria-label="Clear job address">×</button>
+        </div>
       </div>
-      
-      <div class="row">
-        <button class="btn" id="jobSearchBtn">Check coverage</button>
-      </div>
-
-      <div class="row">
-        <div style="font-weight: 600; margin-bottom: 6px;">Coverage results</div>
-        <div class="muted" id="jobStatus">Enter an address and click “Check coverage”.</div>
-        <div id="jobResults" style="margin-top: 8px;"></div>
-      </div>
+    
+    <div class="row">
+      <button class="btn" id="jobSearchBtn" type="button">Check coverage</button>
+    </div>
+    
+    <div class="row">
+      <div class="section-title">Coverage results</div>
+      <div class="muted" id="jobStatus">Enter an address and click “Check coverage”.</div>
+      <div id="jobResults" style="margin-top: 8px;"></div>
+    </div>
 
 
       <div class="row">
@@ -92,9 +173,19 @@
         <div class="legend-item"><span class="swatch" style="background: #16a34a;"></span> Electrician</div>
       </div>
 
-      <div class="muted" style="margin-top: 14px;">
-        Data source: <code>data.csv</code> in this repository.
-      </div>
+     <div class="brand-footer">
+       Data source: <b>data.csv</b> in this repository.
+     </div>
+    
+    .brand-footer{
+    margin-top: 14px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: var(--evp-blue);
+    color: #ffffff;
+    font-size: 13px;
+    }
+    
     </aside>
 
     <main id="map"></main>
