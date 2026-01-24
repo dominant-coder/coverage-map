@@ -448,9 +448,7 @@ jobSearchBtn.addEventListener("click", async () => {
     return;
 
 
-
     
-    }
 
   } catch (e) {
     console.error(e);
