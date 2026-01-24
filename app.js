@@ -445,41 +445,11 @@ jobSearchBtn.addEventListener("click", async () => {
 
     lastJob = { lat: geo.lat, lon: geo.lon, displayName: geo.displayName || address };
     computeCoverageFromJob(lastJob.lat, lastJob.lon, lastJob.displayName);
+    return;
 
 
-    // Place/replace job marker
-    jobLayer.clearLayers();
-    jobMarker = L.marker([geo.lat, geo.lon]).addTo(jobLayer)
-      .bindPopup(`<b>Job Location</b><div style="margin-top:6px;">${geo.displayName || address}</div>`);
-    jobMarker.openPopup();
 
-    // Zoom to job location (nice UX)
-    map.setView([geo.lat, geo.lon], Math.max(map.getZoom(), 9));
-
-    // Compute distances vs currently filtered techs
-    const rows = getFilteredRows().filter(r => isValidLatLon(r.lat, r.lon));
-    if (!rows.length) {
-      setJobStatus("No technicians/electricians match the current filters.");
-      return;
-    }
-
-    const uiRadiusMiles = Math.max(1, Number(radiusMilesInput.value || 100));
-
-    const scored = rows.map(r => {
-      const radiusMiles = (r.rowRadiusMiles && Number.isFinite(r.rowRadiusMiles)) ? r.rowRadiusMiles : uiRadiusMiles;
-      const distance = haversineMiles(geo.lat, geo.lon, r.lat, r.lon);
-      return { ...r, radiusMiles, distance, eligible: distance <= radiusMiles };
-    }).sort((a, b) => a.distance - b.distance);
-
-    const eligible = scored.filter(s => s.eligible);
-    const ineligible = scored.filter(s => !s.eligible);
-
-    if (eligible.length) {
-      setJobStatus(`Found ${eligible.length} eligible resource(s) within radius.`);
-      renderResultsList(eligible, "Inside radius (eligible)");
-    } else {
-      setJobStatus("No resources are within radius. Showing nearest outside radius.");
-      renderResultsList(ineligible.slice(0, 5), "Nearest outside radius");
+    
     }
 
   } catch (e) {
