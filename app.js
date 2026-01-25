@@ -32,6 +32,7 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 const markersLayer = L.layerGroup().addTo(map);
 const circlesLayer = L.layerGroup().addTo(map);
+const highlightLayer = L.layerGroup().addTo(map);
 
 const jobLayer = L.layerGroup().addTo(map);
 let jobMarker = null;
@@ -70,6 +71,7 @@ const stateSelect = document.getElementById("stateSelect");
 const roleSelect = document.getElementById("roleSelect");
 const radiusMilesInput = document.getElementById("radiusMiles");
 const countsEl = document.getElementById("counts");
+const filterStatusEl = document.getElementById("filterStatus");
 const fitBtn = document.getElementById("fitBtn");
 const jobAddressInput = document.getElementById("jobAddress");
 const jobSearchBtn = document.getElementById("jobSearchBtn");
@@ -140,6 +142,7 @@ function getFilteredRows() {
 function render() {
   markersLayer.clearLayers();
   circlesLayer.clearLayers();
+  highlightLayer.clearLayers();
 
 
   const uiRadiusMiles = Math.max(1, Number(radiusMilesInput.value || 100));
@@ -190,6 +193,17 @@ function render() {
   }
 
 }
+
+// State coverage hint
+if (filterStatusEl) {
+  const st = stateSelect.value;
+  if (st && st !== "All" && rows.length === 0) {
+    filterStatusEl.textContent = `No coverage currently listed for ${st}.`;
+  } else {
+    filterStatusEl.textContent = "";
+  }
+}
+
 
 function fitToResults() {
   const rows = getFilteredRows().filter(r => isValidLatLon(r.lat, r.lon));
@@ -308,6 +322,29 @@ async function geocodeAddress(address) {
   };
 }
 
+function highlightNearest(row) {
+  highlightLayer.clearLayers();
+  if (!row || !isValidLatLon(row.lat, row.lon)) return;
+
+  const color = ROLE_COLOR[row.role] || "#6b7280";
+
+  // Thicker outer ring (pulse)
+  L.circleMarker([row.lat, row.lon], {
+    radius: 20,
+    weight: 5,
+    color,
+    fillOpacity: 0,
+    className: "nearest-ring"
+  }).addTo(highlightLayer);
+
+  // Inner ring (static) for clarity
+  L.circleMarker([row.lat, row.lon], {
+    radius: 12,
+    weight: 3,
+    color,
+    fillOpacity: 0
+  }).addTo(highlightLayer);
+}
 
 
 function computeCoverageFromJob(jobLat, jobLon, jobLabel) {
@@ -341,10 +378,14 @@ function computeCoverageFromJob(jobLat, jobLon, jobLabel) {
   const outside = scored.filter(s => !s.eligible);
 
   if (eligible.length) {
-    setJobStatus(`Found ${eligible.length} eligible resource(s) within radius.`);
-    renderResultsList(eligible, "Inside radius (eligible)");
-    return;
-  }
+  setJobStatus(`Found ${eligible.length} eligible resource(s) within radius.`);
+  renderResultsList(eligible, "Inside radius (eligible)");
+  highlightNearest(eligible[0]); // nearest eligible (sorted already)
+  return;
+}
+
+  highlightLayer.clearLayers();
+
 
   // No eligible: show nearest outside, but cap to 250 miles
   const outsideCapped = outside.filter(x => x.distance <= MAX_OUTSIDE_MILES);
