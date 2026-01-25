@@ -26,14 +26,17 @@
   line-height: 1.1;
 }
 
-.sidebar-header{
-  margin-bottom: 14px;
+.sidebar{
   background: #ffffff;
   border: 6px solid var(--evp-blue);
   border-radius: 18px;
   padding: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.18);
   overflow-y: auto;
+}    
+
+.sidebar-header{
+  margin-bottom: 14px;
 }
 
 .brand-logo{
@@ -50,24 +53,29 @@
 
 .input-wrap{
   position: relative;
+  width: 100%;
 }
 
 .clear-btn{
   position: absolute;
-  right: 8px;
+  right: 6px;
   top: 50%;
   transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
   border: 1px solid #d1d5db;
   background: #fff;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 20px;
   line-height: 1;
   color: #6b7280;
 }
 
+#jobAddress{
+  padding-right: 44px; /* space for the X button */
+}
+    
 .clear-btn:hover{
   border-color: #9ca3af;
   color: #111827;
@@ -105,18 +113,25 @@
  }
 
 .footer-logo{
-  display: block;
-  margin: 10px auto 0 auto;
   max-width: 140px;
   height: auto;
   opacity: 0.95;
 }
+    
+.footer-logo-wrap{
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+  
 
 
     
     html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
     .layout { display: grid; grid-template-columns: 320px 1fr; height: 100%; }
-    .sidebar { border-right: 1px solid #e5e7eb; padding: 14px; overflow: auto; }
+    /* sidebar base handled above in .sidebar block */
     #map { height: 100%; }
 
     .row { margin-bottom: 12px; }
@@ -136,7 +151,6 @@
   <div class="layout">
     <aside class="sidebar">
       <div class="sidebar-header">
-        <img class="brand-logo" src="evp-logo.png" alt="EVPassport" onerror="this.style.display='none'">
         <div class="brand-title">Coverage Map</div>
         <div class="brand-subtitle">Select a Service Partner to show locations and a radius coverage ring.</div>
       </div>
@@ -199,9 +213,13 @@
       </div>
 
      <div class="brand-footer">
-       <div>Data source: <b>data.csv</b> in this repository.</div>
-       <img class="footer-logo" src="evp-logo.png" alt="EVPassport" onerror="this.style.display='none'">
+       Data source: <b>data.csv</b> in this repository.
      </div>
+      
+      <div class="footer-logo-wrap">
+        <img class="footer-logo" src="evp-logo.png" alt="EVPassport" onerror="this.style.display='none'">
+      </div>
+
     
     </aside>
 
