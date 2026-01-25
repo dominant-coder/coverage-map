@@ -73,6 +73,7 @@ const countsEl = document.getElementById("counts");
 const fitBtn = document.getElementById("fitBtn");
 const jobAddressInput = document.getElementById("jobAddress");
 const jobSearchBtn = document.getElementById("jobSearchBtn");
+const resetAllBtn = document.getElementById("resetAllBtn");
 const clearJobBtn = document.getElementById("clearJobBtn");
 const jobStatus = document.getElementById("jobStatus");
 const jobResults = document.getElementById("jobResults");
@@ -413,6 +414,27 @@ jobAddressInput.addEventListener("keydown", (e) => {
     e.preventDefault();
     jobSearchBtn.click();
   }
+});
+
+resetAllBtn.addEventListener("click", () => {
+  // reset dropdowns
+  partnerSelect.value = "All";
+  stateSelect.value = "All";
+  roleSelect.value = "All";
+
+  // reset job search
+  jobAddressInput.value = "";
+  lastJob = null;
+  jobLayer.clearLayers();
+  clearJobResults();
+  setJobStatus('Enter an address and click “Check coverage”.');
+
+  // reset radius to default (optional)
+  radiusMilesInput.value = 100;
+
+  // re-render and fit to results
+  render();
+  fitToResults();
 });
 
 
