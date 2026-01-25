@@ -140,6 +140,18 @@
   padding: 18px 0;          /* breathing room */
 }
 
+@keyframes nearestPulse {
+  0%   { stroke-opacity: 1;   stroke-width: 5; }
+  70%  { stroke-opacity: 0.2; stroke-width: 10; }
+  100% { stroke-opacity: 0;   stroke-width: 12; }
+}
+
+/* Leaflet circleMarker draws as SVG path; className lands on that path */
+.nearest-ring {
+  animation: nearestPulse 1.6s ease-out infinite;
+}
+
+
     
     html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
     .layout { display: grid; grid-template-columns: minmax(340px, 26vw) 1fr; height: 100%; }
