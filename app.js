@@ -42,6 +42,7 @@ const MAX_OUTSIDE_MILES = 250;
 
 
 // --- Dot Icon for tech location ---
+
 function makeDotIcon(color, label) {
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22">
@@ -72,6 +73,7 @@ const countsEl = document.getElementById("counts");
 const fitBtn = document.getElementById("fitBtn");
 const jobAddressInput = document.getElementById("jobAddress");
 const jobSearchBtn = document.getElementById("jobSearchBtn");
+const clearJobBtn = document.getElementById("clearJobBtn");
 const jobStatus = document.getElementById("jobStatus");
 const jobResults = document.getElementById("jobResults");
 
@@ -159,7 +161,7 @@ function render() {
 
     // Simple default marker for v1
     const color = ROLE_COLOR[r.role] || "#6b7280";
-    const label = (r.role === "Electrician") ? "E" : (r.role === "Technician") ? "T" : "?";
+    const label = (r.partner && r.partner.trim().length) ? r.partner.trim()[0].toUpperCase() : "?";
     const icon = makeDotIcon(color, label);
     const marker = L.marker([r.lat, r.lon], { icon }).bindPopup(popupHtml);
     marker.addTo(markersLayer);
@@ -395,6 +397,25 @@ Papa.parse(CSV_PATH, {
 });
 
 // --- Event handlers ---
+
+clearJobBtn.addEventListener("click", () => {
+  jobAddressInput.value = "";
+  lastJob = null;
+  jobLayer.clearLayers();
+  clearJobResults();
+  setJobStatus('Enter an address and click “Check coverage”.');
+  render(); // allows auto-fit again because lastJob is now null
+  jobAddressInput.focus();
+});
+
+jobAddressInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    jobSearchBtn.click();
+  }
+});
+
+
 partnerSelect.addEventListener("change", () => {
   render();
   if (lastJob) computeCoverageFromJob(lastJob.lat, lastJob.lon, lastJob.displayName);
