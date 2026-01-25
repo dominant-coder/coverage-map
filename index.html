@@ -28,6 +28,12 @@
 
 .sidebar-header{
   margin-bottom: 14px;
+  background: #ffffff;
+  border: 6px solid var(--evp-blue);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+  overflow-y: auto;
 }
 
 .brand-logo{
@@ -98,6 +104,15 @@
   font-size: 13px;
  }
 
+.footer-logo{
+  display: block;
+  margin: 10px auto 0 auto;
+  max-width: 140px;
+  height: auto;
+  opacity: 0.95;
+}
+
+
     
     html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
     .layout { display: grid; grid-template-columns: 320px 1fr; height: 100%; }
@@ -141,6 +156,15 @@
       </div>
 
       <div class="row">
+        <label for="roleSelect">Role</label>
+        <select id="roleSelect">
+          <option value="All">All</option>
+          <option value="Technician">Technician</option>
+          <option value="Electrician">Electrician</option>
+        </select>
+      </div>
+
+      <div class="row">
         <label for="jobAddress">Job address</label>
         <div class="input-wrap">
           <input id="jobAddress" type="text" placeholder="e.g., Fort Worth, TX" />
@@ -160,15 +184,6 @@
 
 
       <div class="row">
-        <label for="roleSelect">Role</label>
-        <select id="roleSelect">
-          <option value="All">All</option>
-          <option value="Technician">Technician</option>
-          <option value="Electrician">Electrician</option>
-        </select>
-      </div>
-
-      <div class="row">
         <label for="radiusMiles">Coverage Radius (miles)</label>
         <input id="radiusMiles" type="number" min="1" step="1" value="100" />
       </div>
@@ -184,7 +199,8 @@
       </div>
 
      <div class="brand-footer">
-       Data source: <b>data.csv</b> in this repository.
+       <div>Data source: <b>data.csv</b> in this repository.</div>
+       <img class="footer-logo" src="evp-logo.png" alt="EVPassport" onerror="this.style.display='none'">
      </div>
     
     </aside>
