@@ -378,25 +378,33 @@ function computeCoverageFromJob(jobLat, jobLon, jobLabel) {
   const outside = scored.filter(s => !s.eligible);
 
   if (eligible.length) {
-  setJobStatus(`Found ${eligible.length} eligible resource(s) within radius.`);
-  renderResultsList(eligible, "Inside radius (eligible)");
-  highlightNearest(eligible[0]); // nearest eligible (sorted already)
-  return;
-}
+    setJobStatus(`Found ${eligible.length} eligible resource(s) within radius.`);
+    renderResultsList(eligible, "Inside radius (eligible)");
+    highlightNearest(eligible[0]); // nearest eligible (sorted already)
+    return;
+  }
 
+  // No eligible results → clear any prior highlight
   highlightLayer.clearLayers();
-
+  
 
   // No eligible: show nearest outside, but cap to 250 miles
   const outsideCapped = outside.filter(x => x.distance <= MAX_OUTSIDE_MILES);
 
   if (!outsideCapped.length) {
-    setJobStatus(`No resources are within radius, and none are within ${MAX_OUTSIDE_MILES} miles. You can zoom/pan manually to inspect.`);
+    setJobStatus(
+      `No resources are within radius, and none are within ${MAX_OUTSIDE_MILES} miles. You can zoom/pan manually to inspect.`
+    );
     return;
   }
 
-  setJobStatus(`No resources are within radius. Showing nearest outside radius (within ${MAX_OUTSIDE_MILES} miles).`);
-  renderResultsList(outsideCapped.slice(0, 5), `Nearest outside radius (≤ ${MAX_OUTSIDE_MILES} mi)`);
+  setJobStatus(
+    `No resources are within radius. Showing nearest outside radius (within ${MAX_OUTSIDE_MILES} miles).`
+  );
+  renderResultsList(
+    outsideCapped.slice(0, 5), 
+    `Nearest outside radius (≤ ${MAX_OUTSIDE_MILES} mi)`
+  );
 }
 
 
