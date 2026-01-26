@@ -32,10 +32,16 @@
   border-radius: 18px;
   padding: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-  overflow-y: hidden;
+  
   display: flex;
   flex-direction: column;
-}    
+  height: 100%;
+}
+
+.sidebar-content{
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 6px: /* prevents scrollbar overlap */
 
 .sidebar-header{
   margin-bottom: 14px;
@@ -185,10 +191,12 @@
   
   <div class="layout">
     <aside class="sidebar">
-      <div class="sidebar-header">
-        <div class="brand-title">Coverage Map</div>
-        <div class="brand-subtitle">Select a Service Partner to show locations and a radius coverage ring.</div>
-      </div>
+
+      <div class="sidebar-content">
+        <div class="sidebar-header">
+          <div class="brand-title">Coverage Map</div>
+          <div class="brand-subtitle">Select a Service Partner to show locations and a radius coverage ring.</div>
+        </div> 
       
       <div class="row" style="margin-top: 14px;">
         <label for="partnerSelect">Service Partner</label>
@@ -254,7 +262,7 @@
         <div class="legend-item"><span class="swatch" style="background: #2563eb;"></span> Technician</div>
         <div class="legend-item"><span class="swatch" style="background: #16a34a;"></span> Electrician</div>
       </div>
-      
+    </div> <!-- sidebar base handled above in .sidebar block -->
     
       <div class="brand-footer">
        Data source: <b>data.csv</b> in this repository.
@@ -264,7 +272,6 @@
         <img class="footer-logo" src="evp-logo.png" alt="EVPassport" onerror="this.style.display='none'">
       </div>
 
-    
     </aside>
 
     <main id="map"></main>
