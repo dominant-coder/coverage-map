@@ -1,10 +1,10 @@
-partner,name,role,lat,lon,price,address,city,state,zip,phone,email,notes,active
-Alamon,New Bruanfels,Electrician,29.703,-98.1245,$105/hr,,New Bruanfels,TX,,406-885-9421,justin.pratt@alamon.com,,TRUE
-Alamon,Las Vegas,Electrician,36.1699,-115.1398,$105/hr,,Las Vegas,NV,,406-885-9421,justin.pratt@alamon.com,,TRUE
-Alamon,Chino,Electrician,34.0123,-117.6889,$105/hr,,Chino,CA,,406-885-9421,justin.pratt@alamon.com,,TRUE
-Alamon,Indianapolis,Technician,39.7684,-86.1581,$105/hr,,Indianapolis,IN,,406-885-9421,justin.pratt@alamon.com,,TRUE
-Alamon,Lenexa,Technician,38.9647,-94.7595,$105/hr,,Lenexa,KS,,406-885-9421,justin.pratt@alamon.com,,TRUE
-Alamon,Reno,Technician,39.5309,-119.8149,$105/hr,,Reno,NV,,406-885-9421,justin.pratt@alamon.com,,TRUE
-Alamon,San Antonio,Technician,29.4241,-98.4936,$105/hr,,San Antonio,TX,,406-885-9421,justin.pratt@alamon.com,,TRUE
-Alamon,Orlando,Technician,28.5383,-81.3792,$105/hr,,Orlando,FL,,406-885-9421,justin.pratt@alamon.com,,TRUE
-Alamon,Blakeslee Junction,Technician,46.7351,-122.9743,$105/hr,,Blakeslee Junction,WA,,406-885-9421,justin.pratt@alamon.com,,TRUE
+partner,name,role,lat,lon,price,address,city,state,zip,phone,email,active
+Alamon,New Bruanfels,Electrician,29.703,-98.1245,$105/hr,,New Bruanfels,TX,,406-885-9421,justin.pratt@alamon.com,TRUE
+Alamon,Las Vegas,Electrician,36.1699,-115.1398,$105/hr,,Las Vegas,NV,,406-885-9421,justin.pratt@alamon.com,TRUE
+Alamon,Chino,Electrician,34.0123,-117.6889,$105/hr,,Chino,CA,,406-885-9421,justin.pratt@alamon.com,TRUE
+Alamon,Indianapolis,Technician,39.7684,-86.1581,$105/hr,,Indianapolis,IN,,406-885-9421,justin.pratt@alamon.com,TRUE
+Alamon,Lenexa,Technician,38.9647,-94.7595,$105/hr,,Lenexa,KS,,406-885-9421,justin.pratt@alamon.com,TRUE
+Alamon,Reno,Technician,39.5309,-119.8149,$105/hr,,Reno,NV,,406-885-9421,justin.pratt@alamon.com,TRUE
+Alamon,San Antonio,Technician,29.4241,-98.4936,$105/hr,,San Antonio,TX,,406-885-9421,justin.pratt@alamon.com,TRUE
+Alamon,Orlando,Technician,28.5383,-81.3792,$105/hr,,Orlando,FL,,406-885-9421,justin.pratt@alamon.com,TRUE
+Alamon,Blakeslee Junction,Technician,46.7351,-122.9743,$105/hr,,Blakeslee Junction,WA,,406-885-9421,justin.pratt@alamon.com,TRUE
