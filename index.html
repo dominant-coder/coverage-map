@@ -40,6 +40,7 @@
 
 .sidebar-content{
   flex: 1;
+  min-height: 0;   /* IMPORTANT: allows it to shrink and scroll */
   overflow-y: auto;
   padding-right: 6px; /* prevents scrollbar overlap */
 }
@@ -187,6 +188,13 @@
     .counts { font-size: 12px; color: #111827; margin-top: 10px; }
     .btn { width: 100%; padding: 9px 10px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; cursor: pointer; }
     .btn:hover { background: #f9fafb; }
+
+    @media (max-width: 900px){
+  .layout{
+    grid-template-columns: minmax(300px, 36vw) 1fr;
+  }
+}
+
   </style>
 </head>
 <body>
