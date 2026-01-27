@@ -189,11 +189,45 @@
     .btn { width: 100%; padding: 9px 10px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; cursor: pointer; }
     .btn:hover { background: #f9fafb; }
 
-    @media (max-width: 900px){
-  .layout{
-    grid-template-columns: minmax(300px, 36vw) 1fr;
+    /* Short screens (13" laptops, low vertical height): compress UI */
+@media (max-height: 820px){
+  .sidebar{ padding: 12px; }
+  .brand-title{ font-size: 24px; }
+  .brand-subtitle{ font-size: 12px; }
+
+  .row{ margin-bottom: 8px; }
+  label{ margin-bottom: 4px; }
+
+  select,
+  input[type="number"],
+  input[type="text"]{
+    height: 36px;
+    border-radius: 9px;
+  }
+
+  .btn{ padding: 8px 10px; }
+
+  .brand-footer{
+    margin-top: 10px;
+    padding: 8px 10px;
+  }
+
+  .footer-logo-area{
+    padding: 10px 0;
+  }
+  .footer-logo{ max-width: 160px; }
+
+  .legend{ margin-top: 10px; }
+}
+
+    @media (max-height: 820px){
+  /* Keep sidebar compact by collapsing results area */
+  #jobResults{
+    max-height: 120px;
+    overflow-y: auto;
   }
 }
+
 
   </style>
 </head>
