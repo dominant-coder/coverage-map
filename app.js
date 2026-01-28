@@ -401,8 +401,6 @@ function computeCoverageFromJob(jobLat, jobLon, jobLabel) {
     `Nearest outside radius (≤ ${MAX_OUTSIDE_MILES} mi)`
   );
 }
-}
-}
 
 
 // --- Load CSV ---
