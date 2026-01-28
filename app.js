@@ -22,6 +22,13 @@ function isValidLatLon(lat, lon) {
     lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180;
 }
 
+// Helper: exclude HI/AK from default auto-fit unless they are the only results
+function rowsForAutoFit(rows) {
+  const lower48 = rows.filter(r => r.state !== "HI" && r.state !== "AK");
+  return lower48.length ? lower48 : rows;
+}
+
+
 // --- Map setup ---
 const map = L.map("map", { zoomControl: true }).setView([39.5, -98.35], 4); // US-ish default
 
@@ -436,13 +443,7 @@ Papa.parse(CSV_PATH, {
       stateSelect.appendChild(opt);
     }
 
-    function rowsForAutoFit(rows) {
-  // Exclude HI/AK for default auto-zoom (unless user is explicitly viewing them)
-  const lower48 = rows.filter(r => r.state !== "HI" && r.state !== "AK");
-
-  // If we still have results in lower48, use them. Otherwise fall back to all rows.
-  return lower48.length ? lower48 : rows;
-}
+   
 
 
     render();
