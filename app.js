@@ -206,7 +206,7 @@ if (filterStatusEl) {
     map.fitBounds(b.pad(0.25));
   }
 }
-
+}
 
 function fitToResults() {
   const rows = getFilteredRows().filter(r => isValidLatLon(r.lat, r.lon));
