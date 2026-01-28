@@ -192,20 +192,24 @@ if (filterStatusEl) {
 
   countsEl.textContent = `${rows.length} location(s) shown`;
 
-  if (!lastJob && bounds.length) {
-    const b = L.latLngBounds(bounds);
+  if (!lastJob) {
+  const fitRows = rowsForAutoFit(rows).filter(r => isValidLatLon(r.lat, r.lon));
+  if (fitRows.length) {
+    const b = L.latLngBounds(fitRows.map(r => [r.lat, r.lon]));
     map.fitBounds(b.pad(0.25));
   }
-
 }
 
 
 function fitToResults() {
   const rows = getFilteredRows().filter(r => isValidLatLon(r.lat, r.lon));
-  if (!rows.length) return;
-  const b = L.latLngBounds(rows.map(r => [r.lat, r.lon]));
+  const fitRows = rowsForAutoFit(rows);
+  if (!fitRows.length) return;
+
+  const b = L.latLngBounds(fitRows.map(r => [r.lat, r.lon]));
   map.fitBounds(b.pad(0.25));
 }
+
 
 // Approximate state bounding boxes for zooming.
 // Add more as needed. Format: [ [southWestLat, southWestLon], [northEastLat, northEastLon] ]
@@ -431,6 +435,15 @@ Papa.parse(CSV_PATH, {
       opt.textContent = s;
       stateSelect.appendChild(opt);
     }
+
+    function rowsForAutoFit(rows) {
+  // Exclude HI/AK for default auto-zoom (unless user is explicitly viewing them)
+  const lower48 = rows.filter(r => r.state !== "HI" && r.state !== "AK");
+
+  // If we still have results in lower48, use them. Otherwise fall back to all rows.
+  return lower48.length ? lower48 : rows;
+}
+
 
     render();
   },
