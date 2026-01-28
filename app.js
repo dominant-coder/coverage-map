@@ -39,7 +39,7 @@ let jobMarker = null;
 
 let lastJob = null; // { lat, lon, displayName }
 const MAX_OUTSIDE_MILES = 250;
-
+const FIXED_RADIUS_MILES = 100;
 
 
 // --- Dot Icon for tech location ---
@@ -143,6 +143,16 @@ function render() {
   const uiRadiusMiles = FIXED_RADIUS_MILES;
   const rows = getFilteredRows();
 
+  // State coverage hint (shows message when State ≠ All and 0 results)
+if (filterStatusEl) {
+  const st = stateSelect.value;
+  if (st && st !== "All" && rows.length === 0) {
+    filterStatusEl.textContent = `No coverage currently listed for ${st}.`;
+  } else {
+    filterStatusEl.textContent = "";
+  }
+}
+
   const bounds = [];
 
   for (const r of rows) {
@@ -187,16 +197,6 @@ function render() {
     map.fitBounds(b.pad(0.25));
   }
 
-}
-
-// State coverage hint
-if (filterStatusEl) {
-  const st = stateSelect.value;
-  if (st && st !== "All" && rows.length === 0) {
-    filterStatusEl.textContent = `No coverage currently listed for ${st}.`;
-  } else {
-    filterStatusEl.textContent = "";
-  }
 }
 
 
@@ -401,7 +401,8 @@ function computeCoverageFromJob(jobLat, jobLon, jobLabel) {
     `Nearest outside radius (≤ ${MAX_OUTSIDE_MILES} mi)`
   );
 }
-
+}
+}
 
 
 // --- Load CSV ---
