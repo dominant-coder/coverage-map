@@ -1,7 +1,10 @@
 // Coverage Map - v1
 // Loads data from data.csv and renders markers + coverage circles.
 
-const CSV_PATH = "./data.csv";
+const TSE_CSV_PATH = "./data.csv";
+const DEPLOY_CSV_PATH = "./data-deploy.csv";
+
+console.log("✅ app.js loaded @", new Date().toISOString());
 
 // Role -> marker color (used later for consistent styling)
 const ROLE_COLOR = {
@@ -22,10 +25,52 @@ function isValidLatLon(lat, lon) {
     lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180;
 }
 
+function fitViewToRadius(lat, lon, miles) {
+  // Leaflet Circle.getBounds() can require a map-attached layer.
+  // Use LatLng.toBounds() instead (no map dependency).
+  const meters = milesToMeters(miles);
+  const b = L.latLng(lat, lon).toBounds(meters * 2); // size = diameter in meters
+  map.fitBounds(b, { padding: [20, 20], maxZoom: 8 });
+
+}
+
 // Helper: exclude HI/AK from default auto-fit unless they are the only results
 function rowsForAutoFit(rows) {
   const lower48 = rows.filter(r => r.state !== "HI" && r.state !== "AK");
   return lower48.length ? lower48 : rows;
+}
+
+
+/* =========================================================
+   2C — US STATE HELPERS (Deployment Team support)
+   Used ONLY when Deployment CSV has no lat/lon
+   ========================================================= */
+
+const US_STATES = [
+  "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS",
+  "KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY",
+  "NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV",
+  "WI","WY","DC"
+];
+
+const STATE_CENTERS = {
+  AL:[32.8,-86.8], AK:[64.2,-152.4], AZ:[34.0,-111.1], AR:[35.2,-92.4],
+  CA:[37.2,-119.7], CO:[39.0,-105.5], CT:[41.6,-72.7], DE:[39.0,-75.5],
+  FL:[27.8,-81.7], GA:[32.7,-83.3], HI:[20.9,-156.3], ID:[44.2,-114.4],
+  IL:[40.0,-89.2], IN:[39.9,-86.3], IA:[42.1,-93.5], KS:[38.5,-98.3],
+  KY:[37.8,-84.3], LA:[31.0,-92.0], ME:[45.2,-69.0], MD:[39.0,-76.7],
+  MA:[42.3,-71.8], MI:[44.3,-85.6], MN:[46.3,-94.2], MS:[32.7,-89.7],
+  MO:[38.5,-92.5], MT:[46.9,-110.4], NE:[41.5,-99.8], NV:[39.3,-116.6],
+  NH:[43.7,-71.6], NJ:[40.1,-74.7], NM:[34.4,-106.1], NY:[42.9,-75.0],
+  NC:[35.6,-79.4], ND:[47.5,-100.5], OH:[40.3,-82.8], OK:[35.6,-97.5],
+  OR:[44.0,-120.5], PA:[41.0,-77.6], RI:[41.7,-71.5], SC:[33.8,-80.9],
+  SD:[44.4,-100.2], TN:[35.8,-86.4], TX:[31.0,-99.3], UT:[39.3,-111.7],
+  VT:[44.0,-72.7], VA:[37.6,-78.2], WA:[47.4,-120.7], WV:[38.6,-80.6],
+  WI:[44.6,-89.6], WY:[43.0,-107.6], DC:[38.9,-77.0]
+};
+
+function getStateCenter(stateCode) {
+  return STATE_CENTERS[stateCode] || null;
 }
 
 
@@ -46,7 +91,8 @@ let jobMarker = null;
 
 let lastJob = null; // { lat, lon, displayName }
 const MAX_OUTSIDE_MILES = 250;
-const FIXED_RADIUS_MILES = 100;
+const FIXED_RADIUS_MILES = 100;     // coverage circle size
+const VIEW_RADIUS_MILES = 300;      // how wide the map view should be (camera)
 
 
 // --- Dot Icon for tech location ---
@@ -73,6 +119,7 @@ function makeDotIcon(color, label) {
 
 
 // --- UI elements ---
+const deptSelect = document.getElementById("deptSelect");
 const partnerSelect = document.getElementById("partnerSelect");
 const stateSelect = document.getElementById("stateSelect");
 const roleSelect = document.getElementById("roleSelect");
@@ -87,7 +134,10 @@ const jobStatus = document.getElementById("jobStatus");
 const jobResults = document.getElementById("jobResults");
 
 
-let allRows = [];
+let allRowsTSE = [];
+let allRowsDeploy = [];
+let currentDept = "TSE";
+
 
 function populatePartnerDropdown(partners) {
   // Keep "All" as the first option, then add partners.
@@ -108,21 +158,36 @@ function populatePartnerDropdown(partners) {
 function normalizeRow(row) {
   const partner = safeTrim(row.partner);
   const name = safeTrim(row.name);
-  const role = safeTrim(row.role);
+
+  // Deployment has no role; default to Electrician
+  const role = safeTrim(row.role) || "Electrician";
+
+  // TSE-only fields (Deployment won’t have these)
   const price = safeTrim(row.price);
   const notes = safeTrim(row.notes);
+
   const state = safeTrim(row.state).toUpperCase();
 
-
-  // lat/lon must be numbers in decimal format
-  const lat = Number(row.lat);
-  const lon = Number(row.lon);
-
+  // Optional fields in deploy
+  const phone = safeTrim(row.phone || row.phone_number);
+  const email = safeTrim(row.email);
 
   const activeRaw = safeTrim(row.active).toUpperCase();
   const active = (activeRaw === "" || activeRaw === "TRUE" || activeRaw === "1" || activeRaw === "YES");
 
-  return { partner, name, role, lat, lon, price, notes, active, state };
+  // TSE lat/lon exist; Deployment lat/lon missing → use state center
+  let lat = Number(row.lat);
+  let lon = Number(row.lon);
+
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+    const center = getStateCenter(state);
+    if (center) {
+      lat = center[0];
+      lon = center[1];
+    }
+  }
+
+  return { partner, name, role, lat, lon, price, notes, phone, email, active, state };
 }
 
 function getFilteredRows() {
@@ -130,16 +195,19 @@ function getFilteredRows() {
   const selectedState = stateSelect.value;
   const selectedRole = roleSelect.value;
 
-  return allRows.filter(r => {
+  const source = (currentDept === "DEPLOY") ? allRowsDeploy : allRowsTSE;
+
+  return source.filter(r => {
     if (!r.active) return false;
-    
+
     const partnerOk = (selectedPartner === "All") || (r.partner === selectedPartner);
     const roleOk = (selectedRole === "All") || (r.role === selectedRole);
     const stateOk = (selectedState === "All") || (r.state === selectedState);
-    
+
     return partnerOk && roleOk && stateOk;
   });
 }
+
 
 function render() {
   markersLayer.clearLayers();
@@ -147,7 +215,6 @@ function render() {
   highlightLayer.clearLayers();
 
 
-  const uiRadiusMiles = FIXED_RADIUS_MILES;
   const rows = getFilteredRows();
 
   // State coverage hint (shows message when State ≠ All and 0 results)
@@ -203,7 +270,7 @@ if (filterStatusEl) {
   const fitRows = rowsForAutoFit(rows).filter(r => isValidLatLon(r.lat, r.lon));
   if (fitRows.length) {
     const b = L.latLngBounds(fitRows.map(r => [r.lat, r.lon]));
-    map.fitBounds(b.pad(0.25));
+    map.fitBounds(b.pad(0.25), { maxZoom: 8 });
   }
 }
 }
@@ -232,17 +299,22 @@ const STATE_BOUNDS = {
 
 function zoomToState(stateCode) {
   if (!stateCode || stateCode === "All") {
-    // If All is selected, fit to current results instead of the whole US
     fitToResults();
     return;
   }
+
   const bounds = STATE_BOUNDS[stateCode];
-  if (!bounds) {
-    // If we don't have bounds defined yet, do nothing (safe behavior)
+  if (bounds) {
+    map.fitBounds(bounds, { padding: [20, 20], maxZoom: 7 });
     return;
   }
-  map.fitBounds(bounds, { padding: [20, 20] });
+
+  const center = getStateCenter(stateCode);
+  if (center) {
+    fitViewToRadius(center[0], center[1], VIEW_RADIUS_MILES);
+  }
 }
+
 
 function setJobStatus(text) {
   jobStatus.textContent = text;
@@ -299,9 +371,12 @@ function haversineMiles(lat1, lon1, lat2, lon2) {
 // Free geocoding via Photon (OpenStreetMap data), no API key.
 // More browser-friendly than Nominatim for simple demos.
 async function geocodeAddress(address) {
+  // Add "USA" if user didn't include it (improves Photon accuracy)
+  const q = /usa/i.test(address) ? address : `${address}, USA`;
+  
   const url =
-    "https://photon.komoot.io/api/?limit=1&q=" +
-    encodeURIComponent(address);
+  "https://photon.komoot.io/api/?limit=1&q=" +
+  encodeURIComponent(q);
 
   const resp = await fetch(url);
   if (!resp.ok) throw new Error(`Geocoding failed (${resp.status})`);
@@ -362,8 +437,8 @@ function computeCoverageFromJob(jobLat, jobLon, jobLabel) {
     .bindPopup(`<b>Job Location</b><div style="margin-top:6px;">${jobLabel}</div>`);
   jobMarker.openPopup();
 
-  // Keep the map focused on the job
-  map.setView([jobLat, jobLon], Math.max(map.getZoom(), 9));
+  // Keep the map focused on the job (but not too zoomed-in)
+  fitViewToRadius(jobLat, jobLon, VIEW_RADIUS_MILES);
 
   // Score currently filtered resources
   const rows = getFilteredRows().filter(r => isValidLatLon(r.lat, r.lon));
@@ -415,44 +490,76 @@ function computeCoverageFromJob(jobLat, jobLon, jobLabel) {
 
 
 // --- Load CSV ---
-Papa.parse(CSV_PATH, {
-  download: true,
-  header: true,
-  skipEmptyLines: true,
-  complete: (results) => {
-    const raw = results.data || [];
-    allRows = raw.map(normalizeRow).filter(r => r.partner); // minimal sanity check
+function loadCsv(path) {
+  return new Promise((resolve, reject) => {
+    Papa.parse(path, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: (results) => resolve(results.data || []),
+      error: reject
+    });
+  });
+}
 
-    const partners = Array.from(new Set(allRows.map(r => r.partner))).sort((a, b) => a.localeCompare(b));
-    populatePartnerDropdown(partners);
-    // Populate State dropdown based on data.csv
-    const states = Array.from(
-      new Set(allRows.map(r => r.state).filter(Boolean))
-    ).sort((a, b) => a.localeCompare(b));
-    
-    stateSelect.innerHTML = "";
-    const allStateOpt = document.createElement("option");
-    allStateOpt.value = "All";
-    allStateOpt.textContent = "All";
-    stateSelect.appendChild(allStateOpt);
-    
-    for (const s of states) {
+function populatePartnerDropdownForDept() {
+  const source = (currentDept === "DEPLOY") ? allRowsDeploy : allRowsTSE;
+  const partners = Array.from(new Set(source.map(r => r.partner).filter(Boolean)))
+    .sort((a, b) => a.localeCompare(b));
+
+  populatePartnerDropdown(partners);
+}
+
+function populateStateDropdownForDept() {
+  stateSelect.innerHTML = "";
+  const allOpt = document.createElement("option");
+  allOpt.value = "All";
+  allOpt.textContent = "All";
+  stateSelect.appendChild(allOpt);
+
+  if (currentDept === "DEPLOY") {
+    // Deployment: allow all US states
+    for (const s of US_STATES) {
       const opt = document.createElement("option");
       opt.value = s;
       opt.textContent = s;
       stateSelect.appendChild(opt);
     }
+    return;
+  }
 
-   
+  // TSE: only states present in data.csv
+  const states = Array.from(new Set(allRowsTSE.map(r => r.state).filter(Boolean)))
+    .sort((a, b) => a.localeCompare(b));
 
+  for (const s of states) {
+    const opt = document.createElement("option");
+    opt.value = s;
+    opt.textContent = s;
+    stateSelect.appendChild(opt);
+  }
+}
+
+(async function init() {
+  try {
+    const rawTSE = await loadCsv(TSE_CSV_PATH);
+    allRowsTSE = rawTSE.map(normalizeRow).filter(r => r.partner);
+
+    const rawDeploy = await loadCsv(DEPLOY_CSV_PATH);
+    allRowsDeploy = rawDeploy.map(normalizeRow).filter(r => r.partner);
+
+    currentDept = deptSelect?.value || "TSE";
+
+    populatePartnerDropdownForDept();
+    populateStateDropdownForDept();
 
     render();
-  },
-  error: (err) => {
+  } catch (err) {
     console.error("CSV load error:", err);
-    countsEl.textContent = "Failed to load data.csv. Check file name and format.";
+    countsEl.textContent = "Failed to load CSV. Check file name and format.";
   }
-});
+})();
+
 
 // --- Event handlers ---
 
@@ -493,6 +600,30 @@ resetAllBtn.addEventListener("click", () => {
 });
 
 
+deptSelect?.addEventListener("change", () => {
+  currentDept = deptSelect.value;
+
+  // reset filters
+  partnerSelect.value = "All";
+  stateSelect.value = "All";
+  roleSelect.value = "All";
+
+  // clear job state
+  jobAddressInput.value = "";
+  lastJob = null;
+  jobLayer.clearLayers();
+  clearJobResults();
+  setJobStatus('Enter an address and click “Check coverage”.');
+
+  // rebuild dropdowns for the selected dept
+  populatePartnerDropdownForDept();
+  populateStateDropdownForDept();
+
+  render();
+  fitToResults();
+});
+
+
 partnerSelect.addEventListener("change", () => {
   render();
   if (lastJob) computeCoverageFromJob(lastJob.lat, lastJob.lon, lastJob.displayName);
@@ -515,7 +646,7 @@ stateSelect.addEventListener("change", () => {
 });
 
   // --- Job Search Handler ---
-jobSearchBtn.addEventListener("click", async () => {
+jobSearchBtn?.addEventListener("click", async () => {
   const address = (jobAddressInput.value || "").trim();
   clearJobResults();
 
@@ -525,17 +656,25 @@ jobSearchBtn.addEventListener("click", async () => {
   }
 
   setJobStatus("Looking up address…");
+  console.log("[jobSearch] clicked. address =", address);
 
   try {
     const geo = await geocodeAddress(address);
+    console.log("[jobSearch] geocode result =", geo);
+    
     if (!geo || !Number.isFinite(geo.lat) || !Number.isFinite(geo.lon)) {
       setJobStatus("No match found. Try adding city and state (e.g., “Fort Worth, TX”).");
       return;
     }
 
     lastJob = { lat: geo.lat, lon: geo.lon, displayName: geo.displayName || address };
-    computeCoverageFromJob(lastJob.lat, lastJob.lon, lastJob.displayName);
-    return;
+
+// Always move the camera as soon as we have coordinates
+fitViewToRadius(lastJob.lat, lastJob.lon, VIEW_RADIUS_MILES);
+
+computeCoverageFromJob(lastJob.lat, lastJob.lon, lastJob.displayName);
+return;
+
 
 
     
@@ -545,5 +684,4 @@ jobSearchBtn.addEventListener("click", async () => {
     setJobStatus(`Address lookup failed. Try a more specific address. (Details: ${e.message})`);
   }
 });
-
 
