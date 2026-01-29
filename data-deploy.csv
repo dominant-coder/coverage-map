@@ -1,0 +1,268 @@
+partner,name,phone,state,role,email,active
+"EXAMPLE – Do not edit or submit this row ""Here is your company name""",John Doe,214-555-0101,TX,Electrician,john@company.com,TRUE
+CRI Electric,Glenn Rodriguez,210-268-8905,TX,Electrician,grodriguez@cri-electric.com,TRUE
+CRI Electric,Glenn Rodriguez,210-268-8905,OK,Electrician,grodriguez@cri-electric.com,TRUE
+American Electric Systems,John Gill,978-836-6679,MA,Electrician,jgill@american-elec.com,TRUE
+ProTech,ProTech,,PA,Electrician,protech@ptd.net,TRUE
+Capital Shield Electric,Nick Mar,630-320-9838,NY,Electrician,nick.m@capitalshield-electric.com,TRUE
+Apex Solar,Zack Shippee,518-390-3026,NJ,Electrician,zshippee@apexsolarpower.com,TRUE
+Apex Solar,Zack Shippee,518-390-3026,VT,Electrician,zshippee@apexsolarpower.com,TRUE
+Apex Solar,Zack Shippee,518-390-3026,NH,Electrician,zshippee@apexsolarpower.com,TRUE
+Apex Solar,Zack Shippee,518-390-3026,MA,Electrician,zshippee@apexsolarpower.com,TRUE
+Apex Solar,Zack Shippee,518-390-3026,CT,Electrician,zshippee@apexsolarpower.com,TRUE
+Apex Solar,Zack Shippee,518-390-3026,RI,Electrician,zshippee@apexsolarpower.com,TRUE
+Apex Solar,Zack Shippee,518-390-3026,NC,Electrician,zshippee@apexsolarpower.com,TRUE
+Apex Solar,Zack Shippee,518-390-3026,SC,Electrician,zshippee@apexsolarpower.com,TRUE
+Tiger Electric,Ryan Bloom,405-740-9556,CA,Electrician,rbloom@tigerelectric.com,TRUE
+Tiger Electric,Ryan Bloom,405-740-9556,TX,Electrician,rbloom@tigerelectric.com,TRUE
+Tiger Electric,Ryan Bloom,405-740-9556,FL,Electrician,rbloom@tigerelectric.com,TRUE
+Tiger Electric,Ryan Bloom,405-740-9556,NV,Electrician,rbloom@tigerelectric.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,AL,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,AR,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,AZ,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,CO,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,DE,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,FL,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,GA,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,IL,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,IN,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,IA,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,KS,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,KY,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,LA,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,MI,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,MN,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,MS,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,MO,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,NE,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,NV,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,NM,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,NC,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,ND,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,OH,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,OK,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,OR,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,SC,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,SD,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,TN,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,TX,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,VA,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,WA,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,DC,Electrician,jfarnham@nextedgenetworks.com,TRUE
+NEXT EDGE CLEAN ENERGY GROUP,Jamie Farnham,404-903-7341,WI,Electrician,jfarnham@nextedgenetworks.com,TRUE
+Baker Electric,David Lacombe,760-745-2001,CA,Electrician,dlacomb@bakerelectric.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,FL,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,MS,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,AL,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,GA,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,SC,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,TN,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,NC,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,KY,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,VA,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,WV,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,MD,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,DE,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,NJ,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,PA,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,NY,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,RI,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,CT,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,MA,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,DC,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,NH,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,VT,Electrician,matt@creativeparkingconcepts.com,TRUE
+Creative Parking Concepts,Matt Horner,615-708-3728,ME,Electrician,matt@creativeparkingconcepts.com,TRUE
+EVCHARGE4U,Aramis Watts,510-779-3645,CA,Electrician,aramis@evcharge4u.com,TRUE
+Bruce and Merrilees,Beth Devivo,800-652-5560 ext 522,PA,Electrician,bdevivo@bruceandmerrilees.com,TRUE
+Bruce and Merrilees,Beth Devivo,800-652-5560 ext 522,VA,Electrician,bdevivo@bruceandmerrilees.com,TRUE
+Bruce and Merrilees,Beth Devivo,800-652-5560 ext 522,OH,Electrician,bdevivo@bruceandmerrilees.com,TRUE
+Mojave Electric,Nick Vroman,775-440-9952,NV,Electrician,nvroman@mojaveelectric.com,TRUE
+Eco Electric,Jesus Tenorio,702-682-2436,NV,Electrician,jesus@ecoelectriclv.com,TRUE
+EV Charging Installers of America,Bashar Sawaked,973-896-2988,NJ,Electrician,bashar.sawaked@evcharginginstallers.com,TRUE
+EV Charging Installers of America,Bashar Sawaked,973-896-2988,NY,Electrician,bashar.sawaked@evcharginginstallers.com,TRUE
+EV Charging Installers of America,Bashar Sawaked,973-896-2988,CT,Electrician,bashar.sawaked@evcharginginstallers.com,TRUE
+EV Charging Installers of America,Bashar Sawaked,973-896-2988,PA,Electrician,bashar.sawaked@evcharginginstallers.com,TRUE
+EV Charging Installers of America,Bashar Sawaked,973-896-2988,MD,Electrician,bashar.sawaked@evcharginginstallers.com,TRUE
+EV Charging Installers of America,Bashar Sawaked,973-896-2988,VA,Electrician,bashar.sawaked@evcharginginstallers.com,TRUE
+EV Charging Installers of America,Bashar Sawaked,973-896-2988,DC,Electrician,bashar.sawaked@evcharginginstallers.com,TRUE
+EV Charging Installers of America,Bashar Sawaked,973-896-2988,DE,Electrician,bashar.sawaked@evcharginginstallers.com,TRUE
+EV Charging Installers of America,Bashar Sawaked,973-896-2988,WV,Electrician,bashar.sawaked@evcharginginstallers.com,TRUE
+EV Charging Installers of America,Bashar Sawaked,973-896-2988,GA,Electrician,bashar.sawaked@evcharginginstallers.com,TRUE
+EV Charging Installers of America,Bashar Sawaked,973-896-2988,NC,Electrician,bashar.sawaked@evcharginginstallers.com,TRUE
+Mr Bright Electric,Ken,,GA,Electrician,mr.bright@brightelectrician.com,TRUE
+IO Energy,Vladimir Arabadzhi,425-691-9757,CA,Electrician,vladimir@ioenergyinc.com,TRUE
+Brixco Construction Group,Nate White,510-305-2999,CA,Electrician,nwhite@brixco.co,TRUE
+The State Group,Aaron Odonell,416-989-5565,IN,Electrician,ssmith@herbstelectric.com,TRUE
+The State Group,Aaron Odonell,416-989-5565,MI,Electrician,ssmith@herbstelectric.com,TRUE
+The State Group,Aaron Odonell,416-989-5565,NY,Electrician,ssmith@herbstelectric.com,TRUE
+The State Group,Aaron Odonell,416-989-5565,OH,Electrician,ssmith@herbstelectric.com,TRUE
+The State Group,Aaron Odonell,416-989-5565,TX,Electrician,ssmith@herbstelectric.com,TRUE
+The State Group,Aaron Odonell,416-989-5565,TN,Electrician,ssmith@herbstelectric.com,TRUE
+The State Group,Aaron Odonell,416-989-5565,WI,Electrician,ssmith@herbstelectric.com,TRUE
+The State Group,Aaron Odonell,416-989-5565,KY,Electrician,ssmith@herbstelectric.com,TRUE
+NEC Group,David Perry,781-585-0040,CT,Electrician,dperry@necgroup.com,TRUE
+NEC Group,David Perry,781-585-0040,ME,Electrician,dperry@necgroup.com,TRUE
+NEC Group,David Perry,781-585-0040,MA,Electrician,dperry@necgroup.com,TRUE
+NEC Group,David Perry,781-585-0040,NH,Electrician,dperry@necgroup.com,TRUE
+NEC Group,David Perry,781-585-0040,RI,Electrician,dperry@necgroup.com,TRUE
+NEC Group,David Perry,781-585-0040,VT,Electrician,dperry@necgroup.com,TRUE
+NEC Group,David Perry,781-585-0040,FL,Electrician,dperry@necgroup.com,TRUE
+Colvico Inc.,Terry Den Boer,509-252-5843,WA,Electrician,terry@colvicoinc.com,TRUE
+Tomm Electric,Paul Budveit,609-524-4307,NJ,Electrician,paul@tommelectric.com,TRUE
+Tomm Electric,Paul Budveit,609-524-4307,PA,Electrician,paul@tommelectric.com,TRUE
+Time Equipment,John Brondello,425-861-9599,WA,Electrician,john@timeequipment.com,TRUE
+KOBA Energy,Jesse Beltran,951-214-8695,CA,Electrician,Jesse@kobaenergy.com,TRUE
+KOBA Energy,Jesse Beltran,951-214-8695,NV,Electrician,Jesse@kobaenergy.com,TRUE
+KOBA Energy,Jesse Beltran,951-214-8695,FL,Electrician,Jesse@kobaenergy.com,TRUE
+KOBA Energy,Jesse Beltran,951-214-8695,TX,Electrician,Jesse@kobaenergy.com,TRUE
+Forbes Bros,Mark Mochon,780-542-0654,WA,Electrician,mmochon@forbesbrosltd.ca,TRUE
+Forbes Bros,Mark Mochon,780-542-0654,MT,Electrician,mmochon@forbesbrosltd.ca,TRUE
+Forbes Bros,Mark Mochon,780-542-0654,ND,Electrician,mmochon@forbesbrosltd.ca,TRUE
+Forbes Bros,Mark Mochon,780-542-0654,WY,Electrician,mmochon@forbesbrosltd.ca,TRUE
+Forbes Bros,Mark Mochon,780-542-0654,UT,Electrician,mmochon@forbesbrosltd.ca,TRUE
+Forbes Bros,Mark Mochon,780-542-0654,NV,Electrician,mmochon@forbesbrosltd.ca,TRUE
+Forbes Bros,Mark Mochon,780-542-0654,AZ,Electrician,mmochon@forbesbrosltd.ca,TRUE
+Forbes Bros,Mark Mochon,780-542-0654,NM,Electrician,mmochon@forbesbrosltd.ca,TRUE
+Forbes Bros,Mark Mochon,780-542-0654,CO,Electrician,mmochon@forbesbrosltd.ca,TRUE
+Forbes Bros,Mark Mochon,780-542-0654,FL,Electrician,mmochon@forbesbrosltd.ca,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,AL,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,AZ,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,AR,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,CA,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,CO,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,CN,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,DE,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,FL,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,GA,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,ID,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,IL,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,IN,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,IA,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,KS,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,KY,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,LA,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,ME,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,MD,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,MA,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,MI,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,MN,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,MS,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,MO,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,MT,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,NE,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,NV,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,NH,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,NJ,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,NM,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,NY,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,NC,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,ND,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,OH,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,OK,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,OR,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,PA,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,RI,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,SC,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,SD,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,TN,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,TX,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,UT,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,VT,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,VA,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,WA,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,DC,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,WV,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,WI,Electrician,rbakley@infassociates.com,TRUE
+INF Associates Energy Solutions,Ryan Bakley,201-274-4131,WY,Electrician,rbakley@infassociates.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,AL,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,AZ,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,AR,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,CA,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,CO,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,CN,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,DE,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,FL,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,GA,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,ID,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,IL,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,IN,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,IA,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,KS,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,KY,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,LA,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,ME,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,MD,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,MA,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,MI,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,MN,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,MS,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,MO,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,MT,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,NE,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,NV,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,NH,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,NJ,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,NM,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,NY,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,NC,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,ND,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,OH,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,OK,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,OR,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,PA,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,RI,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,SC,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,SD,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,TN,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,TX,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,UT,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,VT,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,VA,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,WA,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,DC,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,WV,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,WI,Electrician,emcguire@umbrellaone.com,TRUE
+Bolt One,Erin McGuire,312-961-0040,WY,Electrician,emcguire@umbrellaone.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,AL,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,AZ,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,AR,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,CA,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,FL,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,GA,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,ID,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,IA,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,KS,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,KY,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,LA,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,MN,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,MS,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,MO,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,MT,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,NE,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,NV,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,NM,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,NC,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,ND,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,OK,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,OR,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,SC,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,SD,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,TN,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,TX,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,UT,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,WA,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,WV,Electrician,rbloom@tait.com,TRUE
+"Tait Environmental Services, Inc.",Ryan Bloom,405-740-9556,WY,Electrician,rbloom@tait.com,TRUE
+Trout Electric,Matt Trout,951-743-0702,CA,Electrician,Matt.trout@troutelectricusa.com,TRUE
+Bombard Electric,Cliff Brooks,702-263-3570,NV,Electrician,cliff.brooks@bombardelec.com,TRUE
+Bombard Electric,Cliff Brooks,702-263-3570,AZ,Electrician,cliff.brooks@bombardelec.com,TRUE
+State Electric Company,Greg Crnkovich,248-821-0343,IL,Electrician,gregc@statecontractingus.com,TRUE
+State Electric Company,Greg Crnkovich,248-821-0343,IN,Electrician,gregc@statecontractingus.com,TRUE
+State Electric Company,Greg Crnkovich,248-821-0343,MI,Electrician,gregc@statecontractingus.com,TRUE
+State Electric Company,Greg Crnkovich,248-821-0343,OH,Electrician,gregc@statecontractingus.com,TRUE
+State Electric Company,Greg Crnkovich,248-821-0343,WI,Electrician,gregc@statecontractingus.com,TRUE
+American Eagles Solutions,Ryan Huffman,,PA,Electrician,rhuffman@americaneaglesolutions.com,TRUE
+Marcope,Mark Cross,,FL,Electrician,mcross@marcope.com,TRUE
+Oscar W. Larson Company (Owl Services),Molly Gavran,,FL,Electrician,Molly.Gavran@owlservices.com,TRUE
+Gorrie-Regan,Kent Reid,(205) 966-6834,AL,Electrician,kent.reid@gorrieregan.com,TRUE
