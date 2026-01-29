@@ -22,6 +22,13 @@ function isValidLatLon(lat, lon) {
     lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180;
 }
 
+// Helper: exclude HI/AK from default auto-fit unless they are the only results
+function rowsForAutoFit(rows) {
+  const lower48 = rows.filter(r => r.state !== "HI" && r.state !== "AK");
+  return lower48.length ? lower48 : rows;
+}
+
+
 // --- Map setup ---
 const map = L.map("map", { zoomControl: true }).setView([39.5, -98.35], 4); // US-ish default
 
@@ -39,7 +46,7 @@ let jobMarker = null;
 
 let lastJob = null; // { lat, lon, displayName }
 const MAX_OUTSIDE_MILES = 250;
-
+const FIXED_RADIUS_MILES = 100;
 
 
 // --- Dot Icon for tech location ---
@@ -69,7 +76,6 @@ function makeDotIcon(color, label) {
 const partnerSelect = document.getElementById("partnerSelect");
 const stateSelect = document.getElementById("stateSelect");
 const roleSelect = document.getElementById("roleSelect");
-const radiusMilesInput = document.getElementById("radiusMiles");
 const countsEl = document.getElementById("counts");
 const filterStatusEl = document.getElementById("filterStatus");
 const fitBtn = document.getElementById("fitBtn");
@@ -112,15 +118,11 @@ function normalizeRow(row) {
   const lat = Number(row.lat);
   const lon = Number(row.lon);
 
-  // per-row radius is optional; if missing we will use the UI radius (default 100)
-  const rowRadiusMiles = row.service_radius_miles !== undefined && row.service_radius_miles !== ""
-    ? Number(row.service_radius_miles)
-    : null;
 
   const activeRaw = safeTrim(row.active).toUpperCase();
   const active = (activeRaw === "" || activeRaw === "TRUE" || activeRaw === "1" || activeRaw === "YES");
 
-  return { partner, name, role, lat, lon, price, notes, rowRadiusMiles, active, state };
+  return { partner, name, role, lat, lon, price, notes, active, state };
 }
 
 function getFilteredRows() {
@@ -145,8 +147,18 @@ function render() {
   highlightLayer.clearLayers();
 
 
-  const uiRadiusMiles = Math.max(1, Number(radiusMilesInput.value || 100));
+  const uiRadiusMiles = FIXED_RADIUS_MILES;
   const rows = getFilteredRows();
+
+  // State coverage hint (shows message when State ≠ All and 0 results)
+if (filterStatusEl) {
+  const st = stateSelect.value;
+  if (st && st !== "All" && rows.length === 0) {
+    filterStatusEl.textContent = `No coverage currently listed for ${st}.`;
+  } else {
+    filterStatusEl.textContent = "";
+  }
+}
 
   const bounds = [];
 
@@ -171,7 +183,7 @@ function render() {
     marker.addTo(markersLayer);
     
 
-    const radiusMiles = (r.rowRadiusMiles && Number.isFinite(r.rowRadiusMiles)) ? r.rowRadiusMiles : uiRadiusMiles;
+    const radiusMiles = FIXED_RADIUS_MILES;
     const circle = L.circle([r.lat, r.lon], {
       radius: milesToMeters(radiusMiles),
       color: color,
@@ -187,30 +199,24 @@ function render() {
 
   countsEl.textContent = `${rows.length} location(s) shown`;
 
-  if (!lastJob && bounds.length) {
-    const b = L.latLngBounds(bounds);
+  if (!lastJob) {
+  const fitRows = rowsForAutoFit(rows).filter(r => isValidLatLon(r.lat, r.lon));
+  if (fitRows.length) {
+    const b = L.latLngBounds(fitRows.map(r => [r.lat, r.lon]));
     map.fitBounds(b.pad(0.25));
   }
-
 }
-
-// State coverage hint
-if (filterStatusEl) {
-  const st = stateSelect.value;
-  if (st && st !== "All" && rows.length === 0) {
-    filterStatusEl.textContent = `No coverage currently listed for ${st}.`;
-  } else {
-    filterStatusEl.textContent = "";
-  }
 }
-
 
 function fitToResults() {
   const rows = getFilteredRows().filter(r => isValidLatLon(r.lat, r.lon));
-  if (!rows.length) return;
-  const b = L.latLngBounds(rows.map(r => [r.lat, r.lon]));
+  const fitRows = rowsForAutoFit(rows);
+  if (!fitRows.length) return;
+
+  const b = L.latLngBounds(fitRows.map(r => [r.lat, r.lon]));
   map.fitBounds(b.pad(0.25));
 }
+
 
 // Approximate state bounding boxes for zooming.
 // Add more as needed. Format: [ [southWestLat, southWestLon], [northEastLat, northEastLon] ]
@@ -366,10 +372,10 @@ function computeCoverageFromJob(jobLat, jobLon, jobLabel) {
     return;
   }
 
-  const uiRadiusMiles = Math.max(1, Number(radiusMilesInput.value || 100));
+  const uiRadiusMiles = FIXED_RADIUS_MILES;
 
   const scored = rows.map(r => {
-    const radiusMiles = (r.rowRadiusMiles && Number.isFinite(r.rowRadiusMiles)) ? r.rowRadiusMiles : uiRadiusMiles;
+  const radiusMiles = FIXED_RADIUS_MILES;
     const distance = haversineMiles(jobLat, jobLon, r.lat, r.lon);
     return { ...r, radiusMiles, distance, eligible: distance <= radiusMiles };
   }).sort((a, b) => a.distance - b.distance);
@@ -408,7 +414,6 @@ function computeCoverageFromJob(jobLat, jobLon, jobLabel) {
 }
 
 
-
 // --- Load CSV ---
 Papa.parse(CSV_PATH, {
   download: true,
@@ -437,6 +442,9 @@ Papa.parse(CSV_PATH, {
       opt.textContent = s;
       stateSelect.appendChild(opt);
     }
+
+   
+
 
     render();
   },
@@ -478,8 +486,6 @@ resetAllBtn.addEventListener("click", () => {
   clearJobResults();
   setJobStatus('Enter an address and click “Check coverage”.');
 
-  // reset radius to default (optional)
-  radiusMilesInput.value = 100;
 
   // re-render and fit to results
   render();
@@ -495,14 +501,6 @@ partnerSelect.addEventListener("change", () => {
 roleSelect.addEventListener("change", () => {
   render();
   if (lastJob) computeCoverageFromJob(lastJob.lat, lastJob.lon, lastJob.displayName);
-});
-
-radiusMilesInput.addEventListener("input", () => {
-  clearTimeout(window.__radiusTimer);
-  window.__radiusTimer = setTimeout(() => {
-    render();
-    if (lastJob) computeCoverageFromJob(lastJob.lat, lastJob.lon, lastJob.displayName);
-  }, 250);
 });
 
 fitBtn.addEventListener("click", fitToResults);
@@ -547,5 +545,3 @@ jobSearchBtn.addEventListener("click", async () => {
     setJobStatus(`Address lookup failed. Try a more specific address. (Details: ${e.message})`);
   }
 });
-
-
