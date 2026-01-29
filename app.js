@@ -29,7 +29,6 @@ function rowsForAutoFit(rows) {
   return lower48.length ? lower48 : rows;
 }
 
-}
 
 /* =========================================================
    2C — US STATE HELPERS (Deployment Team support)
@@ -126,8 +125,6 @@ const jobResults = document.getElementById("jobResults");
 let allRowsTSE = [];
 let allRowsDeploy = [];
 let currentDept = "TSE";
-
-let currentDept = "TSE"; // placeholder for now
 
 
 function populatePartnerDropdown(partners) {
