@@ -474,44 +474,76 @@ function computeCoverageFromJob(jobLat, jobLon, jobLabel) {
 
 
 // --- Load CSV ---
-Papa.parse(CSV_PATH, {
-  download: true,
-  header: true,
-  skipEmptyLines: true,
-  complete: (results) => {
-    const raw = results.data || [];
-    allRows = raw.map(normalizeRow).filter(r => r.partner); // minimal sanity check
+function loadCsv(path) {
+  return new Promise((resolve, reject) => {
+    Papa.parse(path, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: (results) => resolve(results.data || []),
+      error: reject
+    });
+  });
+}
 
-    const partners = Array.from(new Set(allRows.map(r => r.partner))).sort((a, b) => a.localeCompare(b));
-    populatePartnerDropdown(partners);
-    // Populate State dropdown based on data.csv
-    const states = Array.from(
-      new Set(allRows.map(r => r.state).filter(Boolean))
-    ).sort((a, b) => a.localeCompare(b));
-    
-    stateSelect.innerHTML = "";
-    const allStateOpt = document.createElement("option");
-    allStateOpt.value = "All";
-    allStateOpt.textContent = "All";
-    stateSelect.appendChild(allStateOpt);
-    
-    for (const s of states) {
+function populatePartnerDropdownForDept() {
+  const source = (currentDept === "DEPLOY") ? allRowsDeploy : allRowsTSE;
+  const partners = Array.from(new Set(source.map(r => r.partner).filter(Boolean)))
+    .sort((a, b) => a.localeCompare(b));
+
+  populatePartnerDropdown(partners);
+}
+
+function populateStateDropdownForDept() {
+  stateSelect.innerHTML = "";
+  const allOpt = document.createElement("option");
+  allOpt.value = "All";
+  allOpt.textContent = "All";
+  stateSelect.appendChild(allOpt);
+
+  if (currentDept === "DEPLOY") {
+    // Deployment: allow all US states
+    for (const s of US_STATES) {
       const opt = document.createElement("option");
       opt.value = s;
       opt.textContent = s;
       stateSelect.appendChild(opt);
     }
+    return;
+  }
 
-   
+  // TSE: only states present in data.csv
+  const states = Array.from(new Set(allRowsTSE.map(r => r.state).filter(Boolean)))
+    .sort((a, b) => a.localeCompare(b));
 
+  for (const s of states) {
+    const opt = document.createElement("option");
+    opt.value = s;
+    opt.textContent = s;
+    stateSelect.appendChild(opt);
+  }
+}
+
+(async function init() {
+  try {
+    const rawTSE = await loadCsv(TSE_CSV_PATH);
+    allRowsTSE = rawTSE.map(normalizeRow).filter(r => r.partner);
+
+    const rawDeploy = await loadCsv(DEPLOY_CSV_PATH);
+    allRowsDeploy = rawDeploy.map(normalizeRow).filter(r => r.partner);
+
+    currentDept = deptSelect?.value || "TSE";
+
+    populatePartnerDropdownForDept();
+    populateStateDropdownForDept();
 
     render();
-  },
-  error: (err) => {
+  } catch (err) {
     console.error("CSV load error:", err);
-    countsEl.textContent = "Failed to load data.csv. Check file name and format.";
+    countsEl.textContent = "Failed to load CSV. Check file name and format.";
   }
-});
+})();
+
 
 // --- Event handlers ---
 
