@@ -23,6 +23,14 @@ function isValidLatLon(lat, lon) {
     lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180;
 }
 
+function fitViewToRadius(lat, lon, miles) {
+  const b = L.circle([lat, lon], {
+    radius: milesToMeters(miles)
+  }).getBounds();
+
+  map.fitBounds(b, { padding: [20, 20] });
+}
+
 // Helper: exclude HI/AK from default auto-fit unless they are the only results
 function rowsForAutoFit(rows) {
   const lower48 = rows.filter(r => r.state !== "HI" && r.state !== "AK");
@@ -80,7 +88,8 @@ let jobMarker = null;
 
 let lastJob = null; // { lat, lon, displayName }
 const MAX_OUTSIDE_MILES = 250;
-const FIXED_RADIUS_MILES = 100;
+const FIXED_RADIUS_MILES = 100;     // coverage circle size
+const VIEW_RADIUS_MILES = 300;      // how wide the map view should be (camera)
 
 
 // --- Dot Icon for tech location ---
@@ -259,7 +268,7 @@ if (filterStatusEl) {
   const fitRows = rowsForAutoFit(rows).filter(r => isValidLatLon(r.lat, r.lon));
   if (fitRows.length) {
     const b = L.latLngBounds(fitRows.map(r => [r.lat, r.lon]));
-    map.fitBounds(b.pad(0.25));
+    map.fitBounds(b.pad(0.25), { maxZoom: 8 });
   }
 }
 }
@@ -288,17 +297,22 @@ const STATE_BOUNDS = {
 
 function zoomToState(stateCode) {
   if (!stateCode || stateCode === "All") {
-    // If All is selected, fit to current results instead of the whole US
     fitToResults();
     return;
   }
+
   const bounds = STATE_BOUNDS[stateCode];
-  if (!bounds) {
-    // If we don't have bounds defined yet, do nothing (safe behavior)
+  if (bounds) {
+    map.fitBounds(bounds, { padding: [20, 20], maxZoom: 7 });
     return;
   }
-  map.fitBounds(bounds, { padding: [20, 20] });
+
+  const center = getStateCenter(stateCode);
+  if (center) {
+    fitViewToRadius(center[0], center[1], VIEW_RADIUS_MILES);
+  }
 }
+
 
 function setJobStatus(text) {
   jobStatus.textContent = text;
@@ -418,8 +432,8 @@ function computeCoverageFromJob(jobLat, jobLon, jobLabel) {
     .bindPopup(`<b>Job Location</b><div style="margin-top:6px;">${jobLabel}</div>`);
   jobMarker.openPopup();
 
-  // Keep the map focused on the job
-  map.setView([jobLat, jobLon], Math.max(map.getZoom(), 9));
+  // Keep the map focused on the job (but not too zoomed-in)
+  fitViewToRadius(jobLat, jobLon, VIEW_RADIUS_MILES);
 
   // Score currently filtered resources
   const rows = getFilteredRows().filter(r => isValidLatLon(r.lat, r.lon));
