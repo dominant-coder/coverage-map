@@ -4,6 +4,8 @@
 const TSE_CSV_PATH = "./data.csv";
 const DEPLOY_CSV_PATH = "./data-deploy.csv";
 
+console.log("✅ app.js loaded @", new Date().toISOString());
+
 // Role -> marker color (used later for consistent styling)
 const ROLE_COLOR = {
   Technician: "#2563eb",
@@ -643,7 +645,7 @@ stateSelect.addEventListener("change", () => {
 });
 
   // --- Job Search Handler ---
-jobSearchBtn.addEventListener("click", async () => {
+jobSearchBtn?.addEventListener("click", async () => {
   const address = (jobAddressInput.value || "").trim();
   clearJobResults();
 
