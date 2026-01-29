@@ -186,16 +186,19 @@ function getFilteredRows() {
   const selectedState = stateSelect.value;
   const selectedRole = roleSelect.value;
 
-  return allRows.filter(r => {
+  const source = (currentDept === "DEPLOY") ? allRowsDeploy : allRowsTSE;
+
+  return source.filter(r => {
     if (!r.active) return false;
-    
+
     const partnerOk = (selectedPartner === "All") || (r.partner === selectedPartner);
     const roleOk = (selectedRole === "All") || (r.role === selectedRole);
     const stateOk = (selectedState === "All") || (r.state === selectedState);
-    
+
     return partnerOk && roleOk && stateOk;
   });
 }
+
 
 function render() {
   markersLayer.clearLayers();
