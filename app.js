@@ -496,6 +496,15 @@ resetAllBtn.addEventListener("click", () => {
 });
 
 
+deptSelect?.addEventListener("change", () => {
+  currentDept = deptSelect.value;
+
+  // For Phase 1 we do NOT switch datasets yet.
+  // Just a safe placeholder so nothing crashes.
+  render();
+});
+
+
 partnerSelect.addEventListener("change", () => {
   render();
   if (lastJob) computeCoverageFromJob(lastJob.lat, lastJob.lon, lastJob.displayName);
