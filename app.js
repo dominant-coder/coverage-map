@@ -372,8 +372,8 @@ async function geocodeAddress(address) {
   const q = /usa/i.test(address) ? address : `${address}, USA`;
   
   const url =
-    "https://photon.komoot.io/api/?limit=1&q=" +
-    encodeURIComponent(address);
+  "https://photon.komoot.io/api/?limit=1&q=" +
+  encodeURIComponent(q);
 
   const resp = await fetch(url);
   if (!resp.ok) throw new Error(`Geocoding failed (${resp.status})`);
@@ -652,6 +652,7 @@ jobSearchBtn.addEventListener("click", async () => {
     return;
   }
 
+  setJobStatus("Looking up address…");
   console.log("[jobSearch] clicked. address =", address);
 
   try {
