@@ -29,6 +29,40 @@ function rowsForAutoFit(rows) {
   return lower48.length ? lower48 : rows;
 }
 
+}
+
+/* =========================================================
+   2C — US STATE HELPERS (Deployment Team support)
+   Used ONLY when Deployment CSV has no lat/lon
+   ========================================================= */
+
+const US_STATES = [
+  "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS",
+  "KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY",
+  "NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV",
+  "WI","WY","DC"
+];
+
+const STATE_CENTERS = {
+  AL:[32.8,-86.8], AK:[64.2,-152.4], AZ:[34.0,-111.1], AR:[35.2,-92.4],
+  CA:[37.2,-119.7], CO:[39.0,-105.5], CT:[41.6,-72.7], DE:[39.0,-75.5],
+  FL:[27.8,-81.7], GA:[32.7,-83.3], HI:[20.9,-156.3], ID:[44.2,-114.4],
+  IL:[40.0,-89.2], IN:[39.9,-86.3], IA:[42.1,-93.5], KS:[38.5,-98.3],
+  KY:[37.8,-84.3], LA:[31.0,-92.0], ME:[45.2,-69.0], MD:[39.0,-76.7],
+  MA:[42.3,-71.8], MI:[44.3,-85.6], MN:[46.3,-94.2], MS:[32.7,-89.7],
+  MO:[38.5,-92.5], MT:[46.9,-110.4], NE:[41.5,-99.8], NV:[39.3,-116.6],
+  NH:[43.7,-71.6], NJ:[40.1,-74.7], NM:[34.4,-106.1], NY:[42.9,-75.0],
+  NC:[35.6,-79.4], ND:[47.5,-100.5], OH:[40.3,-82.8], OK:[35.6,-97.5],
+  OR:[44.0,-120.5], PA:[41.0,-77.6], RI:[41.7,-71.5], SC:[33.8,-80.9],
+  SD:[44.4,-100.2], TN:[35.8,-86.4], TX:[31.0,-99.3], UT:[39.3,-111.7],
+  VT:[44.0,-72.7], VA:[37.6,-78.2], WA:[47.4,-120.7], WV:[38.6,-80.6],
+  WI:[44.6,-89.6], WY:[43.0,-107.6], DC:[38.9,-77.0]
+};
+
+function getStateCenter(stateCode) {
+  return STATE_CENTERS[stateCode] || null;
+}
+
 
 // --- Map setup ---
 const map = L.map("map", { zoomControl: true }).setView([39.5, -98.35], 4); // US-ish default
@@ -115,21 +149,36 @@ function populatePartnerDropdown(partners) {
 function normalizeRow(row) {
   const partner = safeTrim(row.partner);
   const name = safeTrim(row.name);
-  const role = safeTrim(row.role);
+
+  // Deployment has no role; default to Electrician
+  const role = safeTrim(row.role) || "Electrician";
+
+  // TSE-only fields (Deployment won’t have these)
   const price = safeTrim(row.price);
   const notes = safeTrim(row.notes);
+
   const state = safeTrim(row.state).toUpperCase();
 
-
-  // lat/lon must be numbers in decimal format
-  const lat = Number(row.lat);
-  const lon = Number(row.lon);
-
+  // Optional fields in deploy
+  const phone = safeTrim(row.phone || row.phone_number);
+  const email = safeTrim(row.email);
 
   const activeRaw = safeTrim(row.active).toUpperCase();
   const active = (activeRaw === "" || activeRaw === "TRUE" || activeRaw === "1" || activeRaw === "YES");
 
-  return { partner, name, role, lat, lon, price, notes, active, state };
+  // TSE lat/lon exist; Deployment lat/lon missing → use state center
+  let lat = Number(row.lat);
+  let lon = Number(row.lon);
+
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+    const center = getStateCenter(state);
+    if (center) {
+      lat = center[0];
+      lon = center[1];
+    }
+  }
+
+  return { partner, name, role, lat, lon, price, notes, phone, email, active, state };
 }
 
 function getFilteredRows() {
