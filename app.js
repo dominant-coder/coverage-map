@@ -1,7 +1,8 @@
 // Coverage Map - v1
 // Loads data from data.csv and renders markers + coverage circles.
 
-const CSV_PATH = "./data.csv";
+const TSE_CSV_PATH = "./data.csv";
+const DEPLOY_CSV_PATH = "./data-deploy.csv";
 
 // Role -> marker color (used later for consistent styling)
 const ROLE_COLOR = {
@@ -88,7 +89,10 @@ const jobStatus = document.getElementById("jobStatus");
 const jobResults = document.getElementById("jobResults");
 
 
-let allRows = [];
+let allRowsTSE = [];
+let allRowsDeploy = [];
+let currentDept = "TSE";
+
 let currentDept = "TSE"; // placeholder for now
 
 
