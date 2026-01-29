@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Service Partner Coverage Map (SANDBOX) </title>
+  <title>Service Partner Coverage Map</title>
 
   <link
     rel="stylesheet"
@@ -238,18 +238,16 @@
 
       <div class="sidebar-content">
         <div class="sidebar-header">
-          <div class="brand-title">Coverage Map (SANDBOX) </div>
+          <div class="brand-title">Coverage Map</div>
           <div class="brand-subtitle">Select a Service Partner to show locations and a radius coverage ring.</div>
         </div> 
       
       <div class="row" style="margin-top: 14px;">
-        <label for="deptSelect">Department</label>
-        <select id="deptSelect">
-          <option value="TSE">Technical Operations Team</option>
-          <option value="DEPLOY">Deployment Team</option>
+        <label for="partnerSelect">Service Partner</label>
+        <select id="partnerSelect">
+          <option value="All">All</option>
         </select>
       </div>
-
 
       <div class="row">
         <label for="stateSelect">State</label>
@@ -291,11 +289,6 @@
       <div id="jobResults" style="margin-top: 8px;"></div>
     </div>
 
-
-      <div class="row">
-        <label for="radiusMiles">Coverage Radius (miles)</label>
-        <input id="radiusMiles" type="number" min="1" step="1" value="100" />
-      </div>
 
       <button class="btn" id="fitBtn">Fit map to results</button>
 
