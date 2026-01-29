@@ -26,11 +26,12 @@ function isValidLatLon(lat, lon) {
 }
 
 function fitViewToRadius(lat, lon, miles) {
-  const b = L.circle([lat, lon], {
-    radius: milesToMeters(miles)
-  }).getBounds();
+  // Leaflet Circle.getBounds() can require a map-attached layer.
+  // Use LatLng.toBounds() instead (no map dependency).
+  const meters = milesToMeters(miles);
+  const b = L.latLng(lat, lon).toBounds(meters * 2); // size = diameter in meters
+  map.fitBounds(b, { padding: [20, 20], maxZoom: 8 });
 
-  map.fitBounds(b, { padding: [20, 20] });
 }
 
 // Helper: exclude HI/AK from default auto-fit unless they are the only results
