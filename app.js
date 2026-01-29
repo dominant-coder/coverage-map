@@ -587,9 +587,24 @@ resetAllBtn.addEventListener("click", () => {
 deptSelect?.addEventListener("change", () => {
   currentDept = deptSelect.value;
 
-  // For Phase 1 we do NOT switch datasets yet.
-  // Just a safe placeholder so nothing crashes.
+  // reset filters
+  partnerSelect.value = "All";
+  stateSelect.value = "All";
+  roleSelect.value = "All";
+
+  // clear job state
+  jobAddressInput.value = "";
+  lastJob = null;
+  jobLayer.clearLayers();
+  clearJobResults();
+  setJobStatus('Enter an address and click “Check coverage”.');
+
+  // rebuild dropdowns for the selected dept
+  populatePartnerDropdownForDept();
+  populateStateDropdownForDept();
+
   render();
+  fitToResults();
 });
 
 
