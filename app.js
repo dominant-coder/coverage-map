@@ -73,6 +73,7 @@ function makeDotIcon(color, label) {
 
 
 // --- UI elements ---
+const deptSelect = document.getElementById("deptSelect");
 const partnerSelect = document.getElementById("partnerSelect");
 const stateSelect = document.getElementById("stateSelect");
 const roleSelect = document.getElementById("roleSelect");
@@ -88,6 +89,8 @@ const jobResults = document.getElementById("jobResults");
 
 
 let allRows = [];
+let currentDept = "TSE"; // placeholder for now
+
 
 function populatePartnerDropdown(partners) {
   // Keep "All" as the first option, then add partners.
