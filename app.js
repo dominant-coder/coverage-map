@@ -212,7 +212,6 @@ function render() {
   highlightLayer.clearLayers();
 
 
-  const uiRadiusMiles = FIXED_RADIUS_MILES;
   const rows = getFilteredRows();
 
   // State coverage hint (shows message when State ≠ All and 0 results)
@@ -369,6 +368,9 @@ function haversineMiles(lat1, lon1, lat2, lon2) {
 // Free geocoding via Photon (OpenStreetMap data), no API key.
 // More browser-friendly than Nominatim for simple demos.
 async function geocodeAddress(address) {
+  // Add "USA" if user didn't include it (improves Photon accuracy)
+  const q = /usa/i.test(address) ? address : `${address}, USA`;
+  
   const url =
     "https://photon.komoot.io/api/?limit=1&q=" +
     encodeURIComponent(address);
@@ -650,18 +652,25 @@ jobSearchBtn.addEventListener("click", async () => {
     return;
   }
 
-  setJobStatus("Looking up address…");
+  console.log("[jobSearch] clicked. address =", address);
 
   try {
     const geo = await geocodeAddress(address);
+    console.log("[jobSearch] geocode result =", geo);
+    
     if (!geo || !Number.isFinite(geo.lat) || !Number.isFinite(geo.lon)) {
       setJobStatus("No match found. Try adding city and state (e.g., “Fort Worth, TX”).");
       return;
     }
 
     lastJob = { lat: geo.lat, lon: geo.lon, displayName: geo.displayName || address };
-    computeCoverageFromJob(lastJob.lat, lastJob.lon, lastJob.displayName);
-    return;
+
+// Always move the camera as soon as we have coordinates
+fitViewToRadius(lastJob.lat, lastJob.lon, VIEW_RADIUS_MILES);
+
+computeCoverageFromJob(lastJob.lat, lastJob.lon, lastJob.displayName);
+return;
+
 
 
     
